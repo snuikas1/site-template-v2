@@ -1,0 +1,17 @@
+    <section class="band" id="{{id}}">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>{{title}}</h2>
+          <!--if:intro--><p>{{intro}}</p><!--/if-->
+        </div>
+        <ul class="prices reveal-group">
+          <!--repeat:items-->
+          <li class="price">
+            <span class="price-what">{{what}}</span>
+            <span class="price-eur">{{price}}</span>
+          </li>
+          <!--/repeat-->
+        </ul>
+        <p class="price-note">{{note}}</p>
+      </div>
+    </section>

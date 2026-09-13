@@ -1,0 +1,20 @@
+    <section class="band hero" id="{{id}}">
+      <div class="hero-frame">
+        <picture>
+          <source type="image/avif" sizes="100vw"
+                  srcset="img/{{photoBase}}-900.avif 900w, img/{{photoBase}}-1800.avif 1800w">
+          <img class="hero-photo" src="img/{{photo}}" alt="{{alt}}"
+               sizes="100vw" srcset="img/{{photoBase}}-900.jpg 900w, img/{{photoBase}}-1800.jpg 1800w"
+               width="{{width}}" height="{{height}}" fetchpriority="high" decoding="async" data-parallax>
+        </picture>
+      </div>
+      <div class="wrap hero-inner">
+        <div class="hero-panel">
+          <h1 data-hero>{{title}}</h1>
+          <p data-hero>{{sub}}</p>
+          <div class="hero-actions" data-hero>
+            <!--repeat:actions--><a class="btn{{styleClass}}" href="{{href}}">{{label}}</a><!--/repeat-->
+          </div>
+        </div>
+      </div>
+    </section>

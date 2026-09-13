@@ -1,0 +1,19 @@
+    <section class="band" id="{{id}}">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>{{title}}</h2>
+          <!--if:intro--><p>{{intro}}</p><!--/if-->
+        </div>
+        <div class="faq reveal-group">
+          <!--repeat:items-->
+          <details class="faq-item">
+            <summary>
+              <h3>{{q}}</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">{{a}}</p>
+          </details>
+          <!--/repeat-->
+        </div>
+      </div>
+    </section>

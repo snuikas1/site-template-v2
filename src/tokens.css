@@ -1,0 +1,96 @@
+/* Sluoksnis 1 iš 3: primityvai. Čia gyvena žalios reikšmės ir daugiau niekas.
+   Niekada nerašyk šių kintamųjų tiesiai į komponentus — jie eina per theme.css.
+   Keisdamas klientui spalvas, keisk theme.css, ne šitą bylą.
+
+   Spalvos išvestos OKLCH erdvėje: skalėje hue nekinta, šviesumas krenta tolygiai,
+   o chroma numušama abiejuose galuose, kur spalvos išeina iš gamos. Komentaruose —
+   OKLCH šaltinis, reikšmėse — sRGB hex, kad naršyklei nereikėtų nieko perskaičiuoti. */
+
+:root {
+  /* Neutralai: šalti pilki (slate), nuo popieriaus iki rašalo.
+     Juodos nėra: tamsiausias laiptelis yra n-900, ne #000. */
+  --n-0: #FFFFFF;    /* oklch(1     0     254) */
+  --n-50: #F9FAFC;   /* oklch(0.985 0.003 254) */
+  --n-100: #F1F4F7;  /* oklch(0.966 0.005 254) */
+  --n-200: #E4E8ED;  /* oklch(0.930 0.008 254) */
+  --n-300: #D4D9E0;  /* oklch(0.884 0.011 254) */
+  --n-400: #ABB2BB;  /* oklch(0.762 0.015 254) */
+  --n-500: #858D97;  /* oklch(0.640 0.018 254) */
+  --n-600: #626B76;  /* oklch(0.524 0.020 254) */
+  --n-700: #49515B;  /* oklch(0.432 0.019 254) */
+  --n-800: #2B3139;  /* oklch(0.312 0.016 254) */
+  --n-900: #171B21;  /* oklch(0.222 0.012 254) */
+
+  /* Ženklo skalė: plieno mėlyna (steel blue), ne dangaus. */
+  --brand-50: #EAF3FB;   /* oklch(0.960 0.014 243) */
+  --brand-100: #CBE2F5;  /* oklch(0.902 0.036 243) */
+  --brand-300: #7AABD3;  /* oklch(0.722 0.078 243) */
+  --brand-500: #3279AC;  /* oklch(0.556 0.106 243) */
+  --brand-700: #13537C;  /* oklch(0.424 0.092 243) */
+  --brand-900: #0C314B;  /* oklch(0.302 0.062 243) */
+
+  /* Akcento skalė: varis. Tik pirminiam veiksmui ir fokusui — daugiau niekur.
+     700 ant popieriaus ir 300 ant tamsios juostos praeina AA. */
+  --accent-50: #FDF0E6;   /* oklch(0.962 0.020 58) */
+  --accent-100: #F9D9C1;  /* oklch(0.906 0.048 58) */
+  --accent-300: #DC9D6C;  /* oklch(0.746 0.100 58) */
+  --accent-500: #B96E2E;  /* oklch(0.610 0.122 58) */
+  --accent-700: #8C501A;  /* oklch(0.492 0.104 58) */
+  --accent-900: #5D3513;  /* oklch(0.372 0.074 58) */
+
+  /* Pusiau permatomas rašalas: galerijos lango fonas. */
+  --ink-veil: rgb(23 27 33 / 0.78);
+
+  /* Tarpai: 4 px bazė, dvigubėjanti ten, kur akis to tikisi. */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+  --space-128: 8rem;
+
+  /* Šrifto skalė: VISA takioji (clamp), nuo 360 px iki 1440 px lango.
+     Skaičiai gauti tiesine interpoliacija; maišyti takiųjų ir fiksuotų laiptelių negalima. */
+  --text-xs: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  --text-sm: clamp(0.9375rem, 0.9167rem + 0.0926vw, 1rem);
+  --text-base: clamp(1.0625rem, 1.0417rem + 0.0926vw, 1.125rem);
+  --text-lg: clamp(1.1875rem, 1.1458rem + 0.1852vw, 1.3125rem);
+  --text-xl: clamp(1.3125rem, 1.2083rem + 0.463vw, 1.625rem);
+  --text-2xl: clamp(1.625rem, 1.4167rem + 0.9259vw, 2.25rem);
+  --text-3xl: clamp(2.125rem, 1.75rem + 1.6667vw, 3.25rem);
+  --text-4xl: clamp(2.5rem, 1.8333rem + 2.963vw, 4.5rem);
+
+  /* Eilučių aukščiai ir tarpai tarp raidžių. */
+  --leading-tight: 1.04;
+  --leading-snug: 1.22;
+  --leading-normal: 1.6;
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+
+  /* Kraštų apvalinimas: metalas pjaustomas stačiai. */
+  --radius-0: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 999px;
+
+  /* Trukmės ir greitėjimai — juos naudoja ir CSS, ir main.js.
+     Visos judesio trukmės telpa tarp 100 ir 400 ms. */
+  --dur-1: 120ms;
+  --dur-2: 240ms;
+  --dur-3: 380ms;
+  /* Išimtis su vardu: skaitiklis nejudina nieko, tik perrenka skaitmenis,
+     todėl jam reikia laiko perskaityti. Judesio trukmėms ši reikšmė nenaudojama. */
+  --dur-count: 1200ms;
+  --ease-out: cubic-bezier(0.17, 0.55, 0.55, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Lygiai du pločiai: platus sekcijoms, siauras tekstui (68 ch telpa į 45–90 ženklų matą). */
+  --measure-wide: 1180px;
+  --measure-prose: 68ch;
+  --hairline: 1px;
+}

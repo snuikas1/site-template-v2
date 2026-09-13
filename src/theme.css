@@ -1,0 +1,74 @@
+/* Sluoksnis 2 iš 3: tema. VIENINTELĖ byla, kurią keiti naujam klientui.
+   Kiekviena reikšmė turi prasmę, ne pavadinimą iš dažų katalogo.
+
+   Demonstracinė tema — metalo cechas: šaltas popierius, plieno mėlyna, varis.
+   Šviesi ir tik šviesi: `color-scheme: light` pasakoma garsiai, tamsios temos nėra.
+   Pusiau padaryta tamsi tema blogiau už jokios (taip daro Anthropic ir Apple pradžios puslapis).
+
+   Kontrastas matuojamas naršyklėje (test/harness.mjs ir site-verify check.mjs), ne čia.
+   Žemiau — kas su kuo dedama, o ne pažadas, kad praeina. */
+
+:root {
+  /* Tik šviesi tema. Nuo šito priklauso ir naršyklės slankjuostės, ir formų valdikliai. */
+  color-scheme: light;
+
+  /* Paviršiai */
+  --color-bg: var(--n-50);          /* puslapio popierius */
+  --color-surface: var(--n-0);      /* formos, dialogas, iškelti blokai */
+
+  /* Tekstas */
+  --color-ink: var(--n-900);        /* pagrindinis tekstas ir antraštės */
+  --color-ink-muted: var(--n-700);  /* antraeilis tekstas, parašai */
+
+  /* Ženklas: tamsios juostos, poraštė */
+  --color-brand: var(--brand-700);
+  --color-brand-strong: var(--brand-900);
+  --color-on-brand: var(--n-50);
+
+  /* Akcentas: varis. Pirminis mygtukas, fokusas, esamo meniu punkto brūkšnys — ir viskas. */
+  --color-accent: var(--accent-700);
+  --color-accent-strong: var(--accent-900);
+  --color-on-accent: var(--n-0);
+
+  /* Nuorodos: plieno mėlyna, kad varis liktų tik veiksmams */
+  --color-link: var(--brand-700);
+
+  /* Linijos: šablonas remiasi brūkšniais, ne šešėliais */
+  --color-line: var(--n-300);
+  --color-line-strong: var(--n-900);
+
+  /* Galerijos lango fonas */
+  --color-veil: var(--ink-veil);
+
+  /* Šriftai */
+  --font-display: 'Instrument Serif', 'Instrument Serif fallback', Georgia, serif;
+  --font-body: 'Instrument Sans', 'Instrument Sans fallback', Helvetica, Arial, sans-serif;
+
+  /* Forma */
+  --radius: var(--radius-sm);
+
+  /* Animacija: 1 — įprastai, 0 — viską išjungti visam puslapiui.
+     main.js skaito šią reikšmę; 0 rodo galutinę būseną iš karto. */
+  --motion-scale: 1;
+}
+
+/* Tamsi juosta persuka tas pačias semantines vardines reikšmes į kitą skalės galą.
+   Dėl to nė vienas komponento stilius nežino, ant ko stovi: .band--brand viduje
+   --color-ink jau reiškia šviesų rašalą, o varis — šviesesnį varį. */
+.on-brand {
+  --color-bg: var(--brand-700);
+  --color-surface: var(--brand-900);
+  --color-ink: var(--n-50);
+  --color-ink-muted: var(--brand-100);
+  --color-line: var(--brand-300);
+  --color-line-strong: var(--n-300);
+  --color-link: var(--n-50);
+  --color-accent: var(--accent-300);
+  --color-accent-strong: var(--accent-100);
+  --color-on-accent: var(--n-900);
+}
+
+/* Sistemos nustatymas laimi prieš temą. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-scale: 0; }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "site-template",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vienas turinys, du variantai: dist/one-page/ ir dist/multi-page/. Be priklausomybių.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node test/harness.mjs"
+  }
+}

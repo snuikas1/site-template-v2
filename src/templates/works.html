@@ -1,0 +1,28 @@
+    <section class="band" id="{{id}}">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>{{title}}</h2>
+          <!--if:intro--><p>{{intro}}</p><!--/if-->
+        </div>
+        <ul class="works reveal-group">
+          <!--repeat:items-->
+          <li>
+            <button class="work-shot" type="button" data-full="img/{{photo}}-1200" data-alt="{{alt}}" data-title="{{title}}" data-credit="{{credit}}">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/{{photo}}-720.avif 720w, img/{{photo}}-1200.avif 1200w">
+                <img src="img/{{photo}}-720.jpg" alt="{{alt}}"
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/{{photo}}-720.jpg 720w, img/{{photo}}-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>{{title}}</span><span class="work-place">{{place}}</span></span>
+            </button>
+          </li>
+          <!--/repeat-->
+        </ul>
+<!--if:isTeaser-->
+        <a class="more" href="{{moreHref}}">{{teaserMore}}</a>
+<!--/if-->
+      </div>
+    </section>

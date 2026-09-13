@@ -1,0 +1,13 @@
+    <section class="band band--brand on-brand" id="{{id}}" aria-labelledby="{{id}}-antraste">
+      <div class="wrap">
+        <h2 class="sr-only" id="{{id}}-antraste">{{title}}</h2>
+        <ul class="stats reveal-group">
+          <!--repeat:items-->
+          <li class="stat">
+            <span class="stat-num">{{before}}<!--if:count--><span data-count="{{count}}">{{count}}</span><!--/if-->{{text}}</span>
+            <!--if:after--><span class="stat-label">{{after}}</span><!--/if-->
+          </li>
+          <!--/repeat-->
+        </ul>
+      </div>
+    </section>

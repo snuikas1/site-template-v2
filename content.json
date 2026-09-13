@@ -1,0 +1,430 @@
+{
+  "site": {
+    "name": "Plieno linija",
+    "tagline": "Laiptai, turėklai, vartai ir nerūdijančio plieno paviršiai",
+    "phone": "+370 600 00002",
+    "phoneHref": "tel:+37060000002",
+    "email": "info@plienolinija.lt",
+    "hours": "I–V 8–17",
+    "address": "Cechas: Vilniaus r., Nemėžis",
+    "fictional": true,
+    "lang": "lt",
+    "noindex": true
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "enabled": true,
+      "inNav": false,
+      "title": "Metalas, kuris laiko liniją",
+      "sub": "Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, verdame ceche, montuojame patys.",
+      "photo": "hero-1800.jpg",
+      "alt": "Suvirintojas ceche veda siūlę plieno konstrukcijoje, aplink lekia kibirkštys.",
+      "width": 1800,
+      "height": 1012,
+      "actions": [
+        {
+          "label": "Gauti pasiūlymą",
+          "to": "contact",
+          "style": "primary"
+        },
+        {
+          "label": "Žiūrėti darbus",
+          "to": "works",
+          "style": "ghost"
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "enabled": true,
+      "inNav": true,
+      "navLabel": "Paslaugos",
+      "title": "Paslaugos",
+      "intro": "Keturi darbai, kuriuos dirbame kasdien.",
+      "teaserMore": "Visos paslaugos",
+      "includedTitle": "Kas įskaičiuota",
+      "items": [
+        {
+          "title": "Laiptai ir turėklai",
+          "lead": "Metalinis karkasas, medžio arba stiklo pakopos, turėklas, kuris nejuda.",
+          "body": "Laiptų karkasą verdame iš vientiso profilio, todėl pakopos nesulinksta ir laiptai nepradeda girgždėti. Turėklus tvirtiname į konstrukciją, ne į apdailą. Stiklo užpildą renkamės grūdintą, su šlifuotais kraštais.",
+          "included": [
+            "Matavimas ir brėžinys",
+            "Gamyba ceche",
+            "Montavimas ir dažymas"
+          ]
+        },
+        {
+          "title": "Vartai ir tvoros",
+          "lead": "Stumdomi arba varstomi vartai, automatika, tvora tos pačios linijos.",
+          "body": "Stumdomus vartus statome ant vienos bėgio linijos su paslėptu ratukų mechanizmu. Automatiką įrengiame iš karto, kad vėliau nereikėtų ardyti. Tvorą gaminame to paties profilio kaip vartai, kad kiemas atrodytų vientisas.",
+          "included": [
+            "Pamatai ir bėgis",
+            "Vartai ir tvora",
+            "Automatika ir pultelis"
+          ]
+        },
+        {
+          "title": "Nerūdijančio plieno paviršiai",
+          "lead": "Darbastaliai, plautuvės ir lentynos virtuvėms bei cechams.",
+          "body": "Darbastalius lankstome iš vientiso nerūdijančio plieno lakšto, todėl siūlių, kuriose kaupiasi nešvarumai, nelieka. Plautuvę įviriname į patį paviršių. Paviršių šlifuojame iki matinio, kuris nerodo pirštų atspaudų.",
+          "included": [
+            "Matavimas pagal vietą",
+            "Lankstymas ir virinimas",
+            "Šlifavimas ir montavimas"
+          ]
+        },
+        {
+          "title": "Konstrukcijos pagal užsakymą",
+          "lead": "Stoginės, aikštelės, rėmai ir viskas, kas neturi katalogo numerio.",
+          "body": "Imamės darbų, kurių nerasite kataloge: stoginės automobiliui, terasos rėmo, pramoninio stelažo, laiptinės aikštelės. Skaičiuojame apkrovas ir pateikiame brėžinį prieš pradėdami virinti.",
+          "included": [
+            "Apkrovų skaičiavimas",
+            "Brėžinys derinimui",
+            "Gamyba ir montavimas"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "works",
+      "enabled": true,
+      "inNav": true,
+      "navLabel": "Darbai",
+      "title": "Darbai",
+      "intro": "Trys darbai iš pastarųjų metų.",
+      "teaserMore": "Visi darbai",
+      "items": [
+        {
+          "title": "Sraigtiniai laiptai prie sandėlio",
+          "place": "Vilniaus r., Nemėžis",
+          "photo": "laiptai-sraigtiniai",
+          "alt": "Cinkuoti sraigtiniai laiptai prie metalu dengto sandėlio sienos, virš jų giedras dangus."
+        },
+        {
+          "title": "Balkonų turėklai, 14 butų",
+          "place": "Vilnius, Šnipiškės",
+          "photo": "tureklai-balkonas",
+          "alt": "Nerūdijančio plieno balkonų turėklai šviesiame daugiabučio fasade, šešėliai krinta į sieną."
+        },
+        {
+          "title": "Nerūdijančio plieno darbastaliai",
+          "place": "Vilnius, restorano virtuvė",
+          "photo": "virtuve-nerudijantis",
+          "alt": "Restorano virtuvė su nerūdijančio plieno darbastaliais ir gartraukiu, virėjai dirba prie linijos."
+        }
+      ]
+    },
+    {
+      "id": "process",
+      "enabled": true,
+      "inNav": false,
+      "title": "Kaip dirbame",
+      "intro": "Keturi žingsniai nuo skambučio iki sumontuoto darbo.",
+      "steps": [
+        {
+          "title": "Matuojame vietoje",
+          "text": "Atvažiuojame, išmatuojame ir pasakome, kas įmanoma toje vietoje, o kas ne. Matavimas nemokamas Vilniuje ir rajone."
+        },
+        {
+          "title": "Brėžinys ir kaina",
+          "text": "Per tris darbo dienas gaunate brėžinį ir kainą su nurodytu terminu. Kol nepasirašote, niekas nepradedama."
+        },
+        {
+          "title": "Gaminame ceche",
+          "text": "Virinimas, šlifavimas ir dažymas vyksta ceche, ne objekte. Todėl jūsų kieme nelieka dulkių ir kibirkščių."
+        },
+        {
+          "title": "Montuojame patys",
+          "text": "Montuoja ta pati brigada, kuri gamino. Po montavimo susitvarkome ir išvežame atliekas."
+        }
+      ]
+    },
+    {
+      "id": "trust",
+      "enabled": true,
+      "inNav": false,
+      "title": "Už ką atsakome",
+      "intro": "Keturi dalykai, kurie surašyti sutartyje, ne tik pažadėti telefonu.",
+      "items": [
+        {
+          "title": "5 metų garantija",
+          "text": "Garantija galioja suvirinimo siūlėms ir dangai. Jei siūlė plyšta arba danga lupasi, taisome savo sąskaita."
+        },
+        {
+          "title": "Civilinės atsakomybės draudimas",
+          "text": "Darbai apdrausti. Jei montuodami sugadiname jūsų turtą, nuostolius dengia draudimas, ne jūsų kišenė."
+        },
+        {
+          "title": "Sertifikuoti suvirintojai",
+          "text": "Konstrukcijas verda suvirintojai su galiojančiais sertifikatais. Sertifikatų kopijas pateikiame prieš pasirašant."
+        },
+        {
+          "title": "Terminas sutartyje",
+          "text": "Pabaigos data įrašoma į sutartį. Vėluojame — mažiname kainą už kiekvieną pavėluotą dieną."
+        }
+      ]
+    },
+    {
+      "id": "stats",
+      "enabled": true,
+      "inNav": false,
+      "title": "Skaičiai",
+      "items": [
+        {
+          "before": "",
+          "count": 14,
+          "after": "metai ceche"
+        },
+        {
+          "before": "",
+          "count": 870,
+          "after": "pagamintų darbų"
+        },
+        {
+          "before": "",
+          "count": 5,
+          "after": "metų garantija"
+        },
+        {
+          "before": "",
+          "count": 420,
+          "after": "m² cecho plotas"
+        }
+      ]
+    },
+    {
+      "id": "testimonials",
+      "enabled": true,
+      "inNav": false,
+      "title": "Ką sako užsakovai",
+      "items": [
+        {
+          "quote": "Laiptus sumontavo per dvi dienas ir po savęs išsivalė. Turėklas nejuda nė per plauką, nors vaikai ant jo kabo kasdien.",
+          "who": "Rimantas, Pavilnys"
+        },
+        {
+          "quote": "Vartai stovi trečius metus, žiemą neužšąla ir automatika neužsiblokavo nė karto. Kaina buvo tiksliai tokia, kokią pasakė iš pradžių.",
+          "who": "Eglė, Riešė"
+        }
+      ]
+    },
+    {
+      "id": "prices",
+      "enabled": true,
+      "inNav": true,
+      "navLabel": "Kainos",
+      "title": "Kainos",
+      "intro": "Nuo ko prasideda. Tikslią kainą pasakome po matavimo.",
+      "items": [
+        {
+          "what": "Turėklai, tiesūs, už bėgantį metrą",
+          "price": "nuo 90 €"
+        },
+        {
+          "what": "Laiptai su metaliniu karkasu",
+          "price": "nuo 1 400 €"
+        },
+        {
+          "what": "Stumdomi kiemo vartai su automatika",
+          "price": "nuo 1 900 €"
+        },
+        {
+          "what": "Nerūdijančio plieno darbastalis, už m²",
+          "price": "nuo 320 €"
+        }
+      ],
+      "note": "Kainos su PVM. Matavimas Vilniuje ir rajone nemokamas. Į kainą įskaičiuotas montavimas ir atliekų išvežimas."
+    },
+    {
+      "id": "faq",
+      "enabled": true,
+      "inNav": false,
+      "title": "Dažni klausimai",
+      "items": [
+        {
+          "q": "Per kiek laiko pagaminate?",
+          "a": "Turėklai ir vartai — dvi tris savaites nuo sutarties. Laiptai ir didesnės konstrukcijos — keturias šešias savaites. Tikslus terminas įrašomas į sutartį."
+        },
+        {
+          "q": "Ar atvažiuojate matuoti?",
+          "a": "Taip. Vilniuje ir Vilniaus rajone matavimas nemokamas. Toliau — pagal atstumą, pasakome iš anksto."
+        },
+        {
+          "q": "Ar montuojate patys?",
+          "a": "Taip. Montuoja ta pati brigada, kuri gamino ceche. Subrangovų nesamdome."
+        },
+        {
+          "q": "Kokia garantija?",
+          "a": "Penkeri metai suvirinimo siūlėms ir dangai. Automatikai galioja gamintojo garantija, dažniausiai dveji metai."
+        },
+        {
+          "q": "Kokį metalą naudojate?",
+          "a": "Konstrukcijoms — juodąjį plieną su milteliniu dažymu. Virtuvėms ir lauko paviršiams — nerūdijantį plieną AISI 304. Prie jūros siūlome AISI 316."
+        },
+        {
+          "q": "Kaip atsiskaitoma?",
+          "a": "Trisdešimt procentų avansas pasirašant, likusi dalis po montavimo. Dirbame su fiziniais ir juridiniais asmenimis, išrašome sąskaitą faktūrą."
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "enabled": true,
+      "inNav": true,
+      "navLabel": "Apie",
+      "title": "Apie mus",
+      "paragraphs": [
+        "Cechą Nemėžyje atidarėme 2012 metais su dviem suvirinimo aparatais ir vienu užsakymu. Šiandien ceche dirba vienuolika žmonių, o per metus iš jo išvažiuoja apie šimtą darbų.",
+        "Dirbame tik su tuo, ką patys galime pagaminti ir sumontuoti. Neperparduodame kitų gamybos ir nesiimame darbų, kurių kokybės negalime garantuoti.",
+        "Didžioji dalis užsakymų ateina iš rekomendacijų. Todėl mums pigiau padaryti gerai iš karto, negu taisyti po metų."
+      ],
+      "values": [
+        {
+          "title": "Kaina nesikeičia",
+          "text": "Kainą pasakome po matavimo ir jos nebekeičiame, nebent jūs patys pakeičiate užsakymą."
+        },
+        {
+          "title": "Viena brigada",
+          "text": "Tas pats žmogus matuoja, gamina ir montuoja. Nėra kam permesti atsakomybės."
+        },
+        {
+          "title": "Po savęs sutvarkome",
+          "text": "Objektą paliekame švarų. Atliekas ir pakuotes išvežame patys."
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "enabled": true,
+      "inNav": true,
+      "navLabel": "Kontaktai",
+      "title": "Kontaktai",
+      "intro": "Parašykite, ko reikia, ir per vieną darbo dieną atsakysime su preliminaria kaina.",
+      "form": {
+        "title": "Užklausa",
+        "name": "Vardas",
+        "phone": "Telefonas",
+        "need": "Ko reikia",
+        "options": [
+          "Laiptai ir turėklai",
+          "Vartai ir tvora",
+          "Nerūdijančio plieno paviršiai",
+          "Konstrukcija pagal užsakymą",
+          "Kita"
+        ],
+        "message": "Trumpai apie darbą",
+        "submit": "Siųsti užklausą",
+        "done": "Ačiū. Susisieksime per vieną darbo dieną."
+      }
+    },
+    {
+      "id": "cta",
+      "enabled": true,
+      "inNav": false,
+      "title": "Išmatuokime ir pasakykime tikslią kainą",
+      "action": {
+        "label": "Gauti pasiūlymą",
+        "to": "contact"
+      }
+    }
+  ],
+  "pages": [
+    {
+      "slug": "index",
+      "title": "Pradžia",
+      "sections": [
+        {
+          "id": "hero"
+        },
+        {
+          "id": "services",
+          "teaser": 3
+        },
+        {
+          "id": "works",
+          "teaser": 3
+        },
+        {
+          "id": "process"
+        },
+        {
+          "id": "trust"
+        },
+        {
+          "id": "stats"
+        },
+        {
+          "id": "testimonials"
+        },
+        {
+          "id": "prices"
+        },
+        {
+          "id": "faq"
+        },
+        {
+          "id": "cta"
+        }
+      ]
+    },
+    {
+      "slug": "paslaugos",
+      "title": "Paslaugos",
+      "sections": [
+        {
+          "id": "services"
+        },
+        {
+          "id": "prices"
+        },
+        {
+          "id": "cta"
+        }
+      ]
+    },
+    {
+      "slug": "darbai",
+      "title": "Darbai",
+      "sections": [
+        {
+          "id": "works"
+        },
+        {
+          "id": "cta"
+        }
+      ]
+    },
+    {
+      "slug": "apie",
+      "title": "Apie",
+      "sections": [
+        {
+          "id": "about"
+        },
+        {
+          "id": "process"
+        },
+        {
+          "id": "trust"
+        },
+        {
+          "id": "cta"
+        }
+      ]
+    },
+    {
+      "slug": "kontaktai",
+      "title": "Kontaktai",
+      "sections": [
+        {
+          "id": "contact"
+        },
+        {
+          "id": "faq"
+        }
+      ]
+    }
+  ]
+}

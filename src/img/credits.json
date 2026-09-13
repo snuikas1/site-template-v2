@@ -1,0 +1,23 @@
+{
+  "_": "Nuotraukų autoriai ir licencijos. Duomenys paimti iš Wikimedia Commons API 2026-09-13 ir patikrinti. Trims iš keturių nuotraukų nurodyti autorių privaloma. Statant tikro kliento svetainę visos nuotraukos keičiamos kliento nuotraukomis, o šis failas perrašomas.",
+  "hero-1800.jpg": {
+    "author": "US Air Force",
+    "source": "Wikimedia Commons",
+    "license": "viešoji sritis"
+  },
+  "laiptai-sraigtiniai": {
+    "author": "Jules Verne Times Two",
+    "source": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0"
+  },
+  "tureklai-balkonas": {
+    "author": "SuSanA Secretariat",
+    "source": "Wikimedia Commons",
+    "license": "CC BY 2.0"
+  },
+  "virtuve-nerudijantis": {
+    "author": "Winedirector",
+    "source": "Wikimedia Commons",
+    "license": "CC BY-SA 3.0"
+  }
+}

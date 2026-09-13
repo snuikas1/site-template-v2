@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+  {{{robots}}}
+  <link rel="icon" href="{{{icon}}}">
+  <!-- crossorigin būtinas net savame serveryje: be jo naršyklė šriftą parsiunčia du kartus,
+       nes preload patenka ne į tą talpyklos kibirą kaip tikroji @font-face užklausa. -->
+  <link rel="preload" href="fonts/instrument-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-sans-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Animacijos įjungiamos tik tada, kai jų nori ir sistema, ir tema (--motion-scale).
+    // Klasė uždedama prieš piešiant, kad sekcijos nespėtų mirktelėti.
+    (function () {
+      var scale = getComputedStyle(document.documentElement).getPropertyValue('--motion-scale').trim();
+      if (scale !== '0' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#turinys">Pereiti prie turinio</a>
+
+  <header class="masthead" data-masthead>
+    <div class="wrap masthead-row">
+      <a class="wordmark" href="{{home}}">{{name}}</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="pagrindinis-meniu">Meniu</button>
+      <nav class="nav" id="pagrindinis-meniu" aria-label="Pagrindinis">
+        <ul>
+          <!--repeat:nav--><li><a href="{{href}}"{{{current}}}>{{label}}</a></li><!--/repeat-->
+        </ul>
+      </nav>
+      <a class="btn btn--ghost call" href="{{phoneHref}}">Skambinti</a>
+    </div>
+  </header>
+
+{{{main}}}
+
+  <footer class="colophon">
+    <div class="wrap colophon-grid">
+      <div>
+        <p class="colophon-mark">{{name}}</p>
+        <p>{{tagline}}</p>
+      </div>
+      <div>
+        <h2>Puslapiai</h2>
+        <ul>
+          <!--repeat:nav--><li><a href="{{href}}">{{label}}</a></li><!--/repeat-->
+        </ul>
+      </div>
+      <div>
+        <h2>Kontaktai</h2>
+        <ul>
+          <li><a href="{{phoneHref}}">{{phone}}</a></li>
+          <li><a href="mailto:{{email}}">{{email}}</a></li>
+          <li>{{hours}}</li>
+          <li>{{address}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap colophon-fine">
+      <p>© {{year}} {{name}}</p>
+      <!--if:fictional--><p>Pavyzdinė svetainė: įmonė ir jos duomenys išgalvoti. Nuotraukų autoriai ir licencijos surašyti CREDITS.md.</p><!--/if-->
+    </div>
+  </footer>
+
+{{{dialog}}}
+
+  <script src="vendor/motion.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

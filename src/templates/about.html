@@ -1,0 +1,33 @@
+    <section class="band" id="{{id}}">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>{{title}}</h2>
+          <!--if:intro--><p>{{intro}}</p><!--/if-->
+        </div>
+        <div class="about reveal-group">
+          <div>
+            <!--repeat:paragraphs--><p>{{.}}</p><!--/repeat-->
+          </div>
+<!--if:photo-->
+          <figure class="about-photo">
+            <picture>
+              <source type="image/avif" sizes="(min-width: 760px) 38vw, 92vw"
+                      srcset="img/{{photo}}-720.avif 720w, img/{{photo}}-1200.avif 1200w">
+              <img src="img/{{photo}}-720.jpg" alt="{{alt}}"
+                   sizes="(min-width: 760px) 38vw, 92vw"
+                   srcset="img/{{photo}}-720.jpg 720w, img/{{photo}}-1200.jpg 1200w"
+                   width="720" height="480" loading="lazy" decoding="async">
+            </picture>
+          </figure>
+<!--/if-->
+        </div>
+        <ul class="values reveal-group">
+          <!--repeat:values-->
+          <li class="value">
+            <h3>{{title}}</h3>
+            <p>{{text}}</p>
+          </li>
+          <!--/repeat-->
+        </ul>
+      </div>
+    </section>

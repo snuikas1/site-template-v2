@@ -1,0 +1,44 @@
+    <section class="band" id="{{id}}">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>{{title}}</h2>
+          <!--if:intro--><p>{{intro}}</p><!--/if-->
+        </div>
+<!--if:isTeaser-->
+        <ul class="teasers reveal-group">
+          <!--repeat:items-->
+          <li class="service">
+            <h3>{{title}}</h3>
+            <p>{{lead}}</p>
+          </li>
+          <!--/repeat-->
+        </ul>
+        <a class="more" href="{{moreHref}}">{{teaserMore}}</a>
+<!--/if-->
+<!--if:isFull-->
+        <ul class="services reveal-group">
+          <!--repeat:items-->
+          <li class="service">
+<!--if:photo-->
+            <picture>
+              <source type="image/avif" sizes="(min-width: 760px) 46vw, 92vw"
+                      srcset="img/{{photo}}-720.avif 720w, img/{{photo}}-1200.avif 1200w">
+              <img src="img/{{photo}}-720.jpg" alt="{{alt}}"
+                   sizes="(min-width: 760px) 46vw, 92vw"
+                   srcset="img/{{photo}}-720.jpg 720w, img/{{photo}}-1200.jpg 1200w"
+                   width="720" height="480" loading="lazy" decoding="async">
+            </picture>
+<!--/if-->
+            <h3>{{title}}</h3>
+            <p>{{lead}}</p>
+            <p>{{body}}</p>
+            <p class="included-title">{{includedTitle}}</p>
+            <ul class="included">
+              <!--repeat:included--><li>{{.}}</li><!--/repeat-->
+            </ul>
+          </li>
+          <!--/repeat-->
+        </ul>
+<!--/if-->
+      </div>
+    </section>
