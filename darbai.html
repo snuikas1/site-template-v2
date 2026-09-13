@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Darbai — Plieno linija</title>
+  <meta name="description" content="Sraigtiniai laiptai, balkonų turėklai ir nerūdijančio plieno darbastaliai — dalis darbų, pagamintų ir sumontuotų Nemėžio ceche per pastaruosius metus.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://snuikas1.github.io/site-template-v2/darbai.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Plieno linija">
+  <meta property="og:locale" content="lt_LT">
+  <meta property="og:title" content="Darbai — Plieno linija">
+  <meta property="og:description" content="Sraigtiniai laiptai, balkonų turėklai ir nerūdijančio plieno darbastaliai — dalis darbų, pagamintų ir sumontuotų Nemėžio ceche per pastaruosius metus.">
+  <meta property="og:url" content="https://snuikas1.github.io/site-template-v2/darbai.html">
+  <meta property="og:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Darbai — Plieno linija">
+  <meta name="twitter:description" content="Sraigtiniai laiptai, balkonų turėklai ir nerūdijančio plieno darbastaliai — dalis darbų, pagamintų ir sumontuotų Nemėžio ceche per pastaruosius metus.">
+  <meta name="twitter:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <!-- crossorigin būtinas net savame serveryje: be jo naršyklė šriftą parsiunčia du kartus,
+       nes preload patenka ne į tą talpyklos kibirą kaip tikroji @font-face užklausa. -->
+  <link rel="preload" href="fonts/instrument-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-sans-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Animacijos įjungiamos tik tada, kai jų nori ir sistema, ir tema (--motion-scale).
+    // Klasė uždedama prieš piešiant, kad sekcijos nespėtų mirktelėti.
+    (function () {
+      var scale = getComputedStyle(document.documentElement).getPropertyValue('--motion-scale').trim();
+      if (scale !== '0' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js');
+      }
+    })();
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Plieno linija",
+  "legalName": "Plieno linija, UAB",
+  "url": "https://snuikas1.github.io/site-template-v2/",
+  "image": "https://snuikas1.github.io/site-template-v2/img/og.jpg",
+  "telephone": "+37060000002",
+  "email": "info@plienolinija.lt",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Gamyklos g. 4",
+    "addressLocality": "Nemėžis",
+    "addressRegion": "Vilniaus r.",
+    "postalCode": "LT-13279",
+    "addressCountry": "LT"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "08:00",
+      "closes": "17:00"
+    }
+  ],
+  "priceRange": "€€",
+  "areaServed": [
+    "Vilnius",
+    "Vilniaus rajonas"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pradžia",
+      "item": "https://snuikas1.github.io/site-template-v2/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Darbai",
+      "item": "https://snuikas1.github.io/site-template-v2/darbai.html"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#turinys">Pereiti prie turinio</a>
+
+  <header class="masthead" data-masthead>
+    <div class="wrap masthead-row">
+      <a class="wordmark" href="index.html">Plieno linija</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="pagrindinis-meniu">Meniu</button>
+      <nav class="nav" id="pagrindinis-meniu" aria-label="Pagrindinis">
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html" aria-current="page">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--ghost call" href="tel:+37060000002">Skambinti</a>
+    </div>
+  </header>
+
+  <main id="turinys">
+    <nav class="crumbs" aria-label="Kur esate">
+      <div class="wrap">
+        <ol>
+          <li><a href="index.html">Pradžia</a></li><li><span aria-current="page">Darbai</span></li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="band" id="works">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h1>Darbai</h1>
+          <p>Trys darbai iš pastarųjų metų.</p>
+        </div>
+        <ul class="works reveal-group">
+          
+          <li>
+            <button class="work-shot" type="button" data-full="img/laiptai-sraigtiniai-1200" data-alt="Cinkuoti sraigtiniai laiptai prie metalu dengto sandėlio sienos, virš jų giedras dangus." data-title="Sraigtiniai laiptai prie sandėlio" data-credit="Nuotrauka: Jules Verne Times Two, Wikimedia Commons, CC BY-SA 4.0">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/laiptai-sraigtiniai-720.avif 720w, img/laiptai-sraigtiniai-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/laiptai-sraigtiniai-720.webp 720w, img/laiptai-sraigtiniai-1200.webp 1200w">
+                <img src="img/laiptai-sraigtiniai-720.jpg" alt="Cinkuoti sraigtiniai laiptai prie metalu dengto sandėlio sienos, virš jų giedras dangus."
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/laiptai-sraigtiniai-720.jpg 720w, img/laiptai-sraigtiniai-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>Sraigtiniai laiptai prie sandėlio</span><span class="work-place">Vilniaus r., Nemėžis</span></span>
+            </button>
+          </li>
+          
+          <li>
+            <button class="work-shot" type="button" data-full="img/tureklai-balkonas-1200" data-alt="Nerūdijančio plieno balkonų turėklai šviesiame daugiabučio fasade, šešėliai krinta į sieną." data-title="Balkonų turėklai, 14 butų" data-credit="Nuotrauka: SuSanA Secretariat, Wikimedia Commons, CC BY 2.0">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/tureklai-balkonas-720.avif 720w, img/tureklai-balkonas-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/tureklai-balkonas-720.webp 720w, img/tureklai-balkonas-1200.webp 1200w">
+                <img src="img/tureklai-balkonas-720.jpg" alt="Nerūdijančio plieno balkonų turėklai šviesiame daugiabučio fasade, šešėliai krinta į sieną."
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/tureklai-balkonas-720.jpg 720w, img/tureklai-balkonas-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>Balkonų turėklai, 14 butų</span><span class="work-place">Vilnius, Šnipiškės</span></span>
+            </button>
+          </li>
+          
+          <li>
+            <button class="work-shot" type="button" data-full="img/virtuve-nerudijantis-1200" data-alt="Restorano virtuvė su nerūdijančio plieno darbastaliais ir gartraukiu, virėjai dirba prie linijos." data-title="Nerūdijančio plieno darbastaliai" data-credit="Nuotrauka: Winedirector, Wikimedia Commons, CC BY-SA 3.0">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/virtuve-nerudijantis-720.avif 720w, img/virtuve-nerudijantis-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/virtuve-nerudijantis-720.webp 720w, img/virtuve-nerudijantis-1200.webp 1200w">
+                <img src="img/virtuve-nerudijantis-720.jpg" alt="Restorano virtuvė su nerūdijančio plieno darbastaliais ir gartraukiu, virėjai dirba prie linijos."
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/virtuve-nerudijantis-720.jpg 720w, img/virtuve-nerudijantis-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>Nerūdijančio plieno darbastaliai</span><span class="work-place">Vilnius, restorano virtuvė</span></span>
+            </button>
+          </li>
+          
+        </ul>
+
+
+        <ul class="section-links">
+          <li><a href="paslaugos.html">Visos paslaugos ir kas į jas įskaičiuota</a></li>
+        </ul>
+
+      </div>
+    </section>
+
+    <section class="band band--brand on-brand" id="cta">
+      <div class="wrap cta reveal">
+        <h2>Išmatuokime ir pasakykime tikslią kainą</h2>
+        <a class="btn" href="kontaktai.html">Gauti pasiūlymą</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="colophon">
+    <div class="wrap colophon-grid">
+      <div>
+        <p class="colophon-mark">Plieno linija</p>
+        <p>Laiptai, turėklai, vartai ir nerūdijančio plieno paviršiai</p>
+      </div>
+      <div>
+        <h2>Puslapiai</h2>
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontaktai</h2>
+        <ul>
+          <li><a href="tel:+37060000002">+370 600 00002</a></li>
+          <li><a href="mailto:info@plienolinija.lt">info@plienolinija.lt</a></li>
+          <li>I–V 8–17</li>
+          <li>Cechas: Vilniaus r., Nemėžis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap colophon-fine">
+      <p>© 2026 Plieno linija</p>
+      <p>Pavyzdinė svetainė: įmonė ir jos duomenys išgalvoti. Nuotraukų autoriai ir licencijos surašyti CREDITS.md.</p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="darbo-langas" aria-labelledby="darbo-antraste">
+    <div class="lightbox-photo"></div>
+    <div class="lightbox-bar">
+      <div>
+        <p class="lightbox-title" id="darbo-antraste"></p>
+        <p class="lightbox-credit"></p>
+      </div>
+      <button class="lightbox-close" type="button">Uždaryti</button>
+    </div>
+  </dialog>
+
+
+  <script src="main.js"></script>
+</body>
+</html>

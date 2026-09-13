@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apie — Plieno linija</title>
+  <meta name="description" content="Metalo cechas Nemėžyje nuo 2012 metų: vienuolika žmonių, apie šimtą darbų per metus, penkerių metų garantija siūlėms ir dangai.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://snuikas1.github.io/site-template-v2/apie.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Plieno linija">
+  <meta property="og:locale" content="lt_LT">
+  <meta property="og:title" content="Apie — Plieno linija">
+  <meta property="og:description" content="Metalo cechas Nemėžyje nuo 2012 metų: vienuolika žmonių, apie šimtą darbų per metus, penkerių metų garantija siūlėms ir dangai.">
+  <meta property="og:url" content="https://snuikas1.github.io/site-template-v2/apie.html">
+  <meta property="og:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Apie — Plieno linija">
+  <meta name="twitter:description" content="Metalo cechas Nemėžyje nuo 2012 metų: vienuolika žmonių, apie šimtą darbų per metus, penkerių metų garantija siūlėms ir dangai.">
+  <meta name="twitter:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <!-- crossorigin būtinas net savame serveryje: be jo naršyklė šriftą parsiunčia du kartus,
+       nes preload patenka ne į tą talpyklos kibirą kaip tikroji @font-face užklausa. -->
+  <link rel="preload" href="fonts/instrument-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-sans-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Animacijos įjungiamos tik tada, kai jų nori ir sistema, ir tema (--motion-scale).
+    // Klasė uždedama prieš piešiant, kad sekcijos nespėtų mirktelėti.
+    (function () {
+      var scale = getComputedStyle(document.documentElement).getPropertyValue('--motion-scale').trim();
+      if (scale !== '0' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js');
+      }
+    })();
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Plieno linija",
+  "legalName": "Plieno linija, UAB",
+  "url": "https://snuikas1.github.io/site-template-v2/",
+  "image": "https://snuikas1.github.io/site-template-v2/img/og.jpg",
+  "telephone": "+37060000002",
+  "email": "info@plienolinija.lt",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Gamyklos g. 4",
+    "addressLocality": "Nemėžis",
+    "addressRegion": "Vilniaus r.",
+    "postalCode": "LT-13279",
+    "addressCountry": "LT"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "08:00",
+      "closes": "17:00"
+    }
+  ],
+  "priceRange": "€€",
+  "areaServed": [
+    "Vilnius",
+    "Vilniaus rajonas"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pradžia",
+      "item": "https://snuikas1.github.io/site-template-v2/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Apie",
+      "item": "https://snuikas1.github.io/site-template-v2/apie.html"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#turinys">Pereiti prie turinio</a>
+
+  <header class="masthead" data-masthead>
+    <div class="wrap masthead-row">
+      <a class="wordmark" href="index.html">Plieno linija</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="pagrindinis-meniu">Meniu</button>
+      <nav class="nav" id="pagrindinis-meniu" aria-label="Pagrindinis">
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html" aria-current="page">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--ghost call" href="tel:+37060000002">Skambinti</a>
+    </div>
+  </header>
+
+  <main id="turinys">
+    <nav class="crumbs" aria-label="Kur esate">
+      <div class="wrap">
+        <ol>
+          <li><a href="index.html">Pradžia</a></li><li><span aria-current="page">Apie</span></li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="band" id="about">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h1>Apie mus</h1>
+          
+        </div>
+        <div class="about reveal-group">
+          <div>
+            <p>Cechą Nemėžyje atidarėme 2012 metais su dviem suvirinimo aparatais ir vienu užsakymu. Šiandien ceche dirba vienuolika žmonių, o per metus iš jo išvažiuoja apie šimtą darbų.</p><p>Dirbame tik su tuo, ką patys galime pagaminti ir sumontuoti. Neperparduodame kitų gamybos ir nesiimame darbų, kurių kokybės negalime garantuoti.</p><p>Didžioji dalis užsakymų ateina iš rekomendacijų. Todėl mums pigiau padaryti gerai iš karto, negu taisyti po metų.</p>
+          </div>
+
+        </div>
+        <ul class="values reveal-group">
+          
+          <li class="value">
+            <h3>Kaina nesikeičia</h3>
+            <p>Kainą pasakome po matavimo ir jos nebekeičiame, nebent jūs patys pakeičiate užsakymą.</p>
+          </li>
+          
+          <li class="value">
+            <h3>Viena brigada</h3>
+            <p>Tas pats žmogus matuoja, gamina ir montuoja. Nėra kam permesti atsakomybės.</p>
+          </li>
+          
+          <li class="value">
+            <h3>Po savęs sutvarkome</h3>
+            <p>Objektą paliekame švarų. Atliekas ir pakuotes išvežame patys.</p>
+          </li>
+          
+        </ul>
+
+        <ul class="section-links">
+          <li><a href="kontaktai.html">Susisiekti su cechu Nemėžyje</a></li>
+        </ul>
+
+      </div>
+    </section>
+
+    <section class="band" id="process">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Kaip dirbame</h2>
+          <p>Keturi žingsniai nuo skambučio iki sumontuoto darbo.</p>
+        </div>
+        <ol class="steps reveal-group">
+          
+          <li class="step">
+            <h3>Matuojame vietoje</h3>
+            <p>Atvažiuojame, išmatuojame ir pasakome, kas įmanoma toje vietoje, o kas ne. Matavimas nemokamas Vilniuje ir rajone.</p>
+          </li>
+          
+          <li class="step">
+            <h3>Brėžinys ir kaina</h3>
+            <p>Per tris darbo dienas gaunate brėžinį ir kainą su nurodytu terminu. Kol nepasirašote, niekas nepradedama.</p>
+          </li>
+          
+          <li class="step">
+            <h3>Gaminame ceche</h3>
+            <p>Virinimas, šlifavimas ir dažymas vyksta ceche, ne objekte. Todėl jūsų kieme nelieka dulkių ir kibirkščių.</p>
+          </li>
+          
+          <li class="step">
+            <h3>Montuojame patys</h3>
+            <p>Montuoja ta pati brigada, kuri gamino. Po montavimo susitvarkome ir išvežame atliekas.</p>
+          </li>
+          
+        </ol>
+      </div>
+    </section>
+
+    <section class="band" id="trust">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Už ką atsakome</h2>
+          <p>Keturi dalykai, kurie surašyti sutartyje, ne tik pažadėti telefonu.</p>
+        </div>
+        <ul class="trust reveal-group">
+          
+          <li class="trust-item">
+            <h3>5 metų garantija</h3>
+            <p>Garantija galioja suvirinimo siūlėms ir dangai. Jei siūlė plyšta arba danga lupasi, taisome savo sąskaita.</p>
+          </li>
+          
+          <li class="trust-item">
+            <h3>Civilinės atsakomybės draudimas</h3>
+            <p>Darbai apdrausti. Jei montuodami sugadiname jūsų turtą, nuostolius dengia draudimas, ne jūsų kišenė.</p>
+          </li>
+          
+          <li class="trust-item">
+            <h3>Sertifikuoti suvirintojai</h3>
+            <p>Konstrukcijas verda suvirintojai su galiojančiais sertifikatais. Sertifikatų kopijas pateikiame prieš pasirašant.</p>
+          </li>
+          
+          <li class="trust-item">
+            <h3>Terminas sutartyje</h3>
+            <p>Pabaigos data įrašoma į sutartį. Vėluojame — mažiname kainą už kiekvieną pavėluotą dieną.</p>
+          </li>
+          
+        </ul>
+      </div>
+    </section>
+
+    <section class="band band--brand on-brand" id="cta">
+      <div class="wrap cta reveal">
+        <h2>Išmatuokime ir pasakykime tikslią kainą</h2>
+        <a class="btn" href="kontaktai.html">Gauti pasiūlymą</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="colophon">
+    <div class="wrap colophon-grid">
+      <div>
+        <p class="colophon-mark">Plieno linija</p>
+        <p>Laiptai, turėklai, vartai ir nerūdijančio plieno paviršiai</p>
+      </div>
+      <div>
+        <h2>Puslapiai</h2>
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontaktai</h2>
+        <ul>
+          <li><a href="tel:+37060000002">+370 600 00002</a></li>
+          <li><a href="mailto:info@plienolinija.lt">info@plienolinija.lt</a></li>
+          <li>I–V 8–17</li>
+          <li>Cechas: Vilniaus r., Nemėžis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap colophon-fine">
+      <p>© 2026 Plieno linija</p>
+      <p>Pavyzdinė svetainė: įmonė ir jos duomenys išgalvoti. Nuotraukų autoriai ir licencijos surašyti CREDITS.md.</p>
+    </div>
+  </footer>
+
+
+
+  <script src="main.js"></script>
+</body>
+</html>

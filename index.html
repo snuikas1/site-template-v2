@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pradžia — Plieno linija</title>
+  <meta name="description" content="Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, gaminame ceche, montuojame patys. Vilnius ir rajonas.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://snuikas1.github.io/site-template-v2/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Plieno linija">
+  <meta property="og:locale" content="lt_LT">
+  <meta property="og:title" content="Pradžia — Plieno linija">
+  <meta property="og:description" content="Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, gaminame ceche, montuojame patys. Vilnius ir rajonas.">
+  <meta property="og:url" content="https://snuikas1.github.io/site-template-v2/">
+  <meta property="og:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pradžia — Plieno linija">
+  <meta name="twitter:description" content="Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, gaminame ceche, montuojame patys. Vilnius ir rajonas.">
+  <meta name="twitter:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <!-- crossorigin būtinas net savame serveryje: be jo naršyklė šriftą parsiunčia du kartus,
+       nes preload patenka ne į tą talpyklos kibirą kaip tikroji @font-face užklausa. -->
+  <link rel="preload" href="fonts/instrument-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-sans-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Animacijos įjungiamos tik tada, kai jų nori ir sistema, ir tema (--motion-scale).
+    // Klasė uždedama prieš piešiant, kad sekcijos nespėtų mirktelėti.
+    (function () {
+      var scale = getComputedStyle(document.documentElement).getPropertyValue('--motion-scale').trim();
+      if (scale !== '0' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js');
+      }
+    })();
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Plieno linija",
+  "legalName": "Plieno linija, UAB",
+  "url": "https://snuikas1.github.io/site-template-v2/",
+  "image": "https://snuikas1.github.io/site-template-v2/img/og.jpg",
+  "telephone": "+37060000002",
+  "email": "info@plienolinija.lt",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Gamyklos g. 4",
+    "addressLocality": "Nemėžis",
+    "addressRegion": "Vilniaus r.",
+    "postalCode": "LT-13279",
+    "addressCountry": "LT"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "08:00",
+      "closes": "17:00"
+    }
+  ],
+  "priceRange": "€€",
+  "areaServed": [
+    "Vilnius",
+    "Vilniaus rajonas"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Plieno linija",
+  "url": "https://snuikas1.github.io/site-template-v2/",
+  "inLanguage": "lt"
+}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#turinys">Pereiti prie turinio</a>
+
+  <header class="masthead" data-masthead>
+    <div class="wrap masthead-row">
+      <a class="wordmark" href="index.html">Plieno linija</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="pagrindinis-meniu">Meniu</button>
+      <nav class="nav" id="pagrindinis-meniu" aria-label="Pagrindinis">
+        <ul>
+          <li><a href="index.html" aria-current="page">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--ghost call" href="tel:+37060000002">Skambinti</a>
+    </div>
+  </header>
+
+  <main id="turinys">
+
+    <section class="band hero" id="hero">
+      <div class="hero-frame">
+        <picture>
+          <source type="image/avif" sizes="100vw"
+                  srcset="img/hero-900.avif 900w, img/hero-1800.avif 1800w">
+          <source type="image/webp" sizes="100vw"
+                  srcset="img/hero-900.webp 900w, img/hero-1800.webp 1800w">
+          <img class="hero-photo" src="img/hero-1800.jpg" alt="Suvirintojas ceche veda siūlę plieno konstrukcijoje, aplink lekia kibirkštys."
+               sizes="100vw" srcset="img/hero-900.jpg 900w, img/hero-1800.jpg 1800w"
+               width="1800" height="1012" fetchpriority="high" decoding="async" data-parallax>
+        </picture>
+      </div>
+      <div class="wrap hero-inner">
+        <div class="hero-panel">
+          <h1 data-hero>Metalas, kuris laiko liniją</h1>
+          <p data-hero>Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, verdame ceche, montuojame patys.</p>
+          <div class="hero-actions" data-hero>
+            <a class="btn" href="kontaktai.html">Gauti pasiūlymą</a><a class="btn btn--ghost" href="darbai.html">Žiūrėti darbus</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="services">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Paslaugos</h2>
+          <p>Keturi darbai, kuriuos dirbame kasdien.</p>
+        </div>
+
+        <ul class="teasers reveal-group">
+          
+          <li class="service">
+            <h3>Laiptai ir turėklai</h3>
+            <p>Metalinis karkasas, medžio arba stiklo pakopos, turėklas, kuris nejuda.</p>
+          </li>
+          
+          <li class="service">
+            <h3>Vartai ir tvoros</h3>
+            <p>Stumdomi arba varstomi vartai, automatika, tvora tos pačios linijos.</p>
+          </li>
+          
+          <li class="service">
+            <h3>Nerūdijančio plieno paviršiai</h3>
+            <p>Darbastaliai, plautuvės ir lentynos virtuvėms bei cechams.</p>
+          </li>
+          
+        </ul>
+        <a class="more" href="paslaugos.html">Visos paslaugos</a>
+
+
+
+      </div>
+    </section>
+
+    <section class="band" id="works">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Darbai</h2>
+          <p>Trys darbai iš pastarųjų metų.</p>
+        </div>
+        <ul class="works reveal-group">
+          
+          <li>
+            <button class="work-shot" type="button" data-full="img/laiptai-sraigtiniai-1200" data-alt="Cinkuoti sraigtiniai laiptai prie metalu dengto sandėlio sienos, virš jų giedras dangus." data-title="Sraigtiniai laiptai prie sandėlio" data-credit="Nuotrauka: Jules Verne Times Two, Wikimedia Commons, CC BY-SA 4.0">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/laiptai-sraigtiniai-720.avif 720w, img/laiptai-sraigtiniai-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/laiptai-sraigtiniai-720.webp 720w, img/laiptai-sraigtiniai-1200.webp 1200w">
+                <img src="img/laiptai-sraigtiniai-720.jpg" alt="Cinkuoti sraigtiniai laiptai prie metalu dengto sandėlio sienos, virš jų giedras dangus."
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/laiptai-sraigtiniai-720.jpg 720w, img/laiptai-sraigtiniai-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>Sraigtiniai laiptai prie sandėlio</span><span class="work-place">Vilniaus r., Nemėžis</span></span>
+            </button>
+          </li>
+          
+          <li>
+            <button class="work-shot" type="button" data-full="img/tureklai-balkonas-1200" data-alt="Nerūdijančio plieno balkonų turėklai šviesiame daugiabučio fasade, šešėliai krinta į sieną." data-title="Balkonų turėklai, 14 butų" data-credit="Nuotrauka: SuSanA Secretariat, Wikimedia Commons, CC BY 2.0">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/tureklai-balkonas-720.avif 720w, img/tureklai-balkonas-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/tureklai-balkonas-720.webp 720w, img/tureklai-balkonas-1200.webp 1200w">
+                <img src="img/tureklai-balkonas-720.jpg" alt="Nerūdijančio plieno balkonų turėklai šviesiame daugiabučio fasade, šešėliai krinta į sieną."
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/tureklai-balkonas-720.jpg 720w, img/tureklai-balkonas-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>Balkonų turėklai, 14 butų</span><span class="work-place">Vilnius, Šnipiškės</span></span>
+            </button>
+          </li>
+          
+          <li>
+            <button class="work-shot" type="button" data-full="img/virtuve-nerudijantis-1200" data-alt="Restorano virtuvė su nerūdijančio plieno darbastaliais ir gartraukiu, virėjai dirba prie linijos." data-title="Nerūdijančio plieno darbastaliai" data-credit="Nuotrauka: Winedirector, Wikimedia Commons, CC BY-SA 3.0">
+              <picture>
+                <source type="image/avif" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/virtuve-nerudijantis-720.avif 720w, img/virtuve-nerudijantis-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                        srcset="img/virtuve-nerudijantis-720.webp 720w, img/virtuve-nerudijantis-1200.webp 1200w">
+                <img src="img/virtuve-nerudijantis-720.jpg" alt="Restorano virtuvė su nerūdijančio plieno darbastaliais ir gartraukiu, virėjai dirba prie linijos."
+                     sizes="(min-width: 960px) 31vw, (min-width: 560px) 46vw, 92vw"
+                     srcset="img/virtuve-nerudijantis-720.jpg 720w, img/virtuve-nerudijantis-1200.jpg 1200w"
+                     width="720" height="480" loading="lazy" decoding="async">
+              </picture>
+              <span class="work-caption"><span>Nerūdijančio plieno darbastaliai</span><span class="work-place">Vilnius, restorano virtuvė</span></span>
+            </button>
+          </li>
+          
+        </ul>
+
+        <a class="more" href="darbai.html">Visi darbai</a>
+
+
+      </div>
+    </section>
+
+    <section class="band" id="process">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Kaip dirbame</h2>
+          <p>Keturi žingsniai nuo skambučio iki sumontuoto darbo.</p>
+        </div>
+        <ol class="steps reveal-group">
+          
+          <li class="step">
+            <h3>Matuojame vietoje</h3>
+            <p>Atvažiuojame, išmatuojame ir pasakome, kas įmanoma toje vietoje, o kas ne. Matavimas nemokamas Vilniuje ir rajone.</p>
+          </li>
+          
+          <li class="step">
+            <h3>Brėžinys ir kaina</h3>
+            <p>Per tris darbo dienas gaunate brėžinį ir kainą su nurodytu terminu. Kol nepasirašote, niekas nepradedama.</p>
+          </li>
+          
+          <li class="step">
+            <h3>Gaminame ceche</h3>
+            <p>Virinimas, šlifavimas ir dažymas vyksta ceche, ne objekte. Todėl jūsų kieme nelieka dulkių ir kibirkščių.</p>
+          </li>
+          
+          <li class="step">
+            <h3>Montuojame patys</h3>
+            <p>Montuoja ta pati brigada, kuri gamino. Po montavimo susitvarkome ir išvežame atliekas.</p>
+          </li>
+          
+        </ol>
+      </div>
+    </section>
+
+    <section class="band" id="trust">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Už ką atsakome</h2>
+          <p>Keturi dalykai, kurie surašyti sutartyje, ne tik pažadėti telefonu.</p>
+        </div>
+        <ul class="trust reveal-group">
+          
+          <li class="trust-item">
+            <h3>5 metų garantija</h3>
+            <p>Garantija galioja suvirinimo siūlėms ir dangai. Jei siūlė plyšta arba danga lupasi, taisome savo sąskaita.</p>
+          </li>
+          
+          <li class="trust-item">
+            <h3>Civilinės atsakomybės draudimas</h3>
+            <p>Darbai apdrausti. Jei montuodami sugadiname jūsų turtą, nuostolius dengia draudimas, ne jūsų kišenė.</p>
+          </li>
+          
+          <li class="trust-item">
+            <h3>Sertifikuoti suvirintojai</h3>
+            <p>Konstrukcijas verda suvirintojai su galiojančiais sertifikatais. Sertifikatų kopijas pateikiame prieš pasirašant.</p>
+          </li>
+          
+          <li class="trust-item">
+            <h3>Terminas sutartyje</h3>
+            <p>Pabaigos data įrašoma į sutartį. Vėluojame — mažiname kainą už kiekvieną pavėluotą dieną.</p>
+          </li>
+          
+        </ul>
+      </div>
+    </section>
+
+    <section class="band band--brand on-brand" id="stats" aria-labelledby="stats-antraste">
+      <div class="wrap">
+        <h2 class="sr-only" id="stats-antraste">Skaičiai</h2>
+        <ul class="stats reveal-group">
+          
+          <li class="stat">
+            <span class="stat-num"><span data-count="14">14</span></span>
+            <span class="stat-label">metai ceche</span>
+          </li>
+          
+          <li class="stat">
+            <span class="stat-num"><span data-count="870">870</span></span>
+            <span class="stat-label">pagamintų darbų</span>
+          </li>
+          
+          <li class="stat">
+            <span class="stat-num"><span data-count="5">5</span></span>
+            <span class="stat-label">metų garantija</span>
+          </li>
+          
+          <li class="stat">
+            <span class="stat-num"><span data-count="420">420</span></span>
+            <span class="stat-label">m² cecho plotas</span>
+          </li>
+          
+        </ul>
+      </div>
+    </section>
+
+    <section class="band" id="testimonials">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Ką sako užsakovai</h2>
+          
+        </div>
+        <div class="quotes reveal-group">
+          
+          <figure class="quote">
+            <q>Laiptus sumontavo per dvi dienas ir po savęs išsivalė. Turėklas nejuda nė per plauką, nors vaikai ant jo kabo kasdien.</q>
+            <figcaption>Rimantas, Pavilnys</figcaption>
+          </figure>
+          
+          <figure class="quote">
+            <q>Vartai stovi trečius metus, žiemą neužšąla ir automatika neužsiblokavo nė karto. Kaina buvo tiksliai tokia, kokią pasakė iš pradžių.</q>
+            <figcaption>Eglė, Riešė</figcaption>
+          </figure>
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="prices">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Kainos</h2>
+          <p>Nuo ko prasideda. Tikslią kainą pasakome po matavimo.</p>
+        </div>
+        <ul class="prices reveal-group">
+          
+          <li class="price">
+            <span class="price-what">Turėklai, tiesūs, už bėgantį metrą</span>
+            <span class="price-eur">nuo 90 €</span>
+          </li>
+          
+          <li class="price">
+            <span class="price-what">Laiptai su metaliniu karkasu</span>
+            <span class="price-eur">nuo 1 400 €</span>
+          </li>
+          
+          <li class="price">
+            <span class="price-what">Stumdomi kiemo vartai su automatika</span>
+            <span class="price-eur">nuo 1 900 €</span>
+          </li>
+          
+          <li class="price">
+            <span class="price-what">Nerūdijančio plieno darbastalis, už m²</span>
+            <span class="price-eur">nuo 320 €</span>
+          </li>
+          
+        </ul>
+        <p class="price-note">Kainos su PVM. Matavimas Vilniuje ir rajone nemokamas. Į kainą įskaičiuotas montavimas ir atliekų išvežimas.</p>
+      </div>
+    </section>
+
+    <section class="band" id="faq">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Dažni klausimai</h2>
+          
+        </div>
+        <div class="faq reveal-group">
+          
+          <details class="faq-item">
+            <summary>
+              <h3>Per kiek laiko pagaminate?</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">Turėklai ir vartai — dvi tris savaites nuo sutarties. Laiptai ir didesnės konstrukcijos — keturias šešias savaites. Tikslus terminas įrašomas į sutartį.</p>
+            
+          </details>
+          
+          <details class="faq-item">
+            <summary>
+              <h3>Ar atvažiuojate matuoti?</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">Taip. Vilniuje ir Vilniaus rajone matavimas nemokamas. Toliau — pagal atstumą, pasakome iš anksto.</p>
+            <p class="faq-more"><a href="kontaktai.html">Užsakyti nemokamą matavimą</a></p>
+          </details>
+          
+          <details class="faq-item">
+            <summary>
+              <h3>Ar montuojate patys?</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">Taip. Montuoja ta pati brigada, kuri gamino ceche. Subrangovų nesamdome.</p>
+            
+          </details>
+          
+          <details class="faq-item">
+            <summary>
+              <h3>Kokia garantija?</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">Penkeri metai suvirinimo siūlėms ir dangai. Automatikai galioja gamintojo garantija, dažniausiai dveji metai.</p>
+            
+          </details>
+          
+          <details class="faq-item">
+            <summary>
+              <h3>Kokį metalą naudojate?</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">Konstrukcijoms — juodąjį plieną su milteliniu dažymu. Virtuvėms ir lauko paviršiams — nerūdijantį plieną AISI 304. Prie jūros siūlome AISI 316.</p>
+            
+          </details>
+          
+          <details class="faq-item">
+            <summary>
+              <h3>Kaip atsiskaitoma?</h3>
+              <span class="faq-mark" aria-hidden="true">+</span>
+            </summary>
+            <p class="faq-answer">Trisdešimt procentų avansas pasirašant, likusi dalis po montavimo. Dirbame su fiziniais ir juridiniais asmenimis, išrašome sąskaitą faktūrą.</p>
+            
+          </details>
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--brand on-brand" id="cta">
+      <div class="wrap cta reveal">
+        <h2>Išmatuokime ir pasakykime tikslią kainą</h2>
+        <a class="btn" href="kontaktai.html">Gauti pasiūlymą</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="colophon">
+    <div class="wrap colophon-grid">
+      <div>
+        <p class="colophon-mark">Plieno linija</p>
+        <p>Laiptai, turėklai, vartai ir nerūdijančio plieno paviršiai</p>
+      </div>
+      <div>
+        <h2>Puslapiai</h2>
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontaktai</h2>
+        <ul>
+          <li><a href="tel:+37060000002">+370 600 00002</a></li>
+          <li><a href="mailto:info@plienolinija.lt">info@plienolinija.lt</a></li>
+          <li>I–V 8–17</li>
+          <li>Cechas: Vilniaus r., Nemėžis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap colophon-fine">
+      <p>© 2026 Plieno linija</p>
+      <p>Pavyzdinė svetainė: įmonė ir jos duomenys išgalvoti. Nuotraukų autoriai ir licencijos surašyti CREDITS.md.</p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="darbo-langas" aria-labelledby="darbo-antraste">
+    <div class="lightbox-photo"></div>
+    <div class="lightbox-bar">
+      <div>
+        <p class="lightbox-title" id="darbo-antraste"></p>
+        <p class="lightbox-credit"></p>
+      </div>
+      <button class="lightbox-close" type="button">Uždaryti</button>
+    </div>
+  </dialog>
+
+
+  <script src="main.js"></script>
+</body>
+</html>

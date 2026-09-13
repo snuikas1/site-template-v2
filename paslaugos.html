@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="lt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paslaugos — Plieno linija</title>
+  <meta name="description" content="Laiptai ir turėklai, vartai ir tvoros, nerūdijančio plieno paviršiai ir konstrukcijos pagal užsakymą. Kainos nuo 90 € už bėgantį metrą, matavimas nemokamas.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://snuikas1.github.io/site-template-v2/paslaugos.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Plieno linija">
+  <meta property="og:locale" content="lt_LT">
+  <meta property="og:title" content="Paslaugos — Plieno linija">
+  <meta property="og:description" content="Laiptai ir turėklai, vartai ir tvoros, nerūdijančio plieno paviršiai ir konstrukcijos pagal užsakymą. Kainos nuo 90 € už bėgantį metrą, matavimas nemokamas.">
+  <meta property="og:url" content="https://snuikas1.github.io/site-template-v2/paslaugos.html">
+  <meta property="og:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Paslaugos — Plieno linija">
+  <meta name="twitter:description" content="Laiptai ir turėklai, vartai ir tvoros, nerūdijančio plieno paviršiai ir konstrukcijos pagal užsakymą. Kainos nuo 90 € už bėgantį metrą, matavimas nemokamas.">
+  <meta name="twitter:image" content="https://snuikas1.github.io/site-template-v2/img/og.jpg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <!-- crossorigin būtinas net savame serveryje: be jo naršyklė šriftą parsiunčia du kartus,
+       nes preload patenka ne į tą talpyklos kibirą kaip tikroji @font-face užklausa. -->
+  <link rel="preload" href="fonts/instrument-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-sans-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrument-serif-latin-ext-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Animacijos įjungiamos tik tada, kai jų nori ir sistema, ir tema (--motion-scale).
+    // Klasė uždedama prieš piešiant, kad sekcijos nespėtų mirktelėti.
+    (function () {
+      var scale = getComputedStyle(document.documentElement).getPropertyValue('--motion-scale').trim();
+      if (scale !== '0' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js');
+      }
+    })();
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Plieno linija",
+  "legalName": "Plieno linija, UAB",
+  "url": "https://snuikas1.github.io/site-template-v2/",
+  "image": "https://snuikas1.github.io/site-template-v2/img/og.jpg",
+  "telephone": "+37060000002",
+  "email": "info@plienolinija.lt",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Gamyklos g. 4",
+    "addressLocality": "Nemėžis",
+    "addressRegion": "Vilniaus r.",
+    "postalCode": "LT-13279",
+    "addressCountry": "LT"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "08:00",
+      "closes": "17:00"
+    }
+  ],
+  "priceRange": "€€",
+  "areaServed": [
+    "Vilnius",
+    "Vilniaus rajonas"
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pradžia",
+      "item": "https://snuikas1.github.io/site-template-v2/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Paslaugos",
+      "item": "https://snuikas1.github.io/site-template-v2/paslaugos.html"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#turinys">Pereiti prie turinio</a>
+
+  <header class="masthead" data-masthead>
+    <div class="wrap masthead-row">
+      <a class="wordmark" href="index.html">Plieno linija</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="pagrindinis-meniu">Meniu</button>
+      <nav class="nav" id="pagrindinis-meniu" aria-label="Pagrindinis">
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html" aria-current="page">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--ghost call" href="tel:+37060000002">Skambinti</a>
+    </div>
+  </header>
+
+  <main id="turinys">
+    <nav class="crumbs" aria-label="Kur esate">
+      <div class="wrap">
+        <ol>
+          <li><a href="index.html">Pradžia</a></li><li><span aria-current="page">Paslaugos</span></li>
+        </ol>
+      </div>
+    </nav>
+
+    <section class="band" id="services">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h1>Paslaugos</h1>
+          <p>Keturi darbai, kuriuos dirbame kasdien.</p>
+        </div>
+
+
+        <ul class="services reveal-group">
+          
+          <li class="service">
+
+            <h3>Laiptai ir turėklai</h3>
+            <p>Metalinis karkasas, medžio arba stiklo pakopos, turėklas, kuris nejuda.</p>
+            <p>Laiptų karkasą verdame iš vientiso profilio, todėl pakopos nesulinksta ir laiptai nepradeda girgždėti. Turėklus tvirtiname į konstrukciją, ne į apdailą. Stiklo užpildą renkamės grūdintą, su šlifuotais kraštais.</p>
+            <p class="included-title">Kas įskaičiuota</p>
+            <ul class="included">
+              <li>Matavimas ir brėžinys</li><li>Gamyba ceche</li><li>Montavimas ir dažymas</li>
+            </ul>
+          </li>
+          
+          <li class="service">
+
+            <h3>Vartai ir tvoros</h3>
+            <p>Stumdomi arba varstomi vartai, automatika, tvora tos pačios linijos.</p>
+            <p>Stumdomus vartus statome ant vienos bėgio linijos su paslėptu ratukų mechanizmu. Automatiką įrengiame iš karto, kad vėliau nereikėtų ardyti. Tvorą gaminame to paties profilio kaip vartai, kad kiemas atrodytų vientisas.</p>
+            <p class="included-title">Kas įskaičiuota</p>
+            <ul class="included">
+              <li>Pamatai ir bėgis</li><li>Vartai ir tvora</li><li>Automatika ir pultelis</li>
+            </ul>
+          </li>
+          
+          <li class="service">
+
+            <h3>Nerūdijančio plieno paviršiai</h3>
+            <p>Darbastaliai, plautuvės ir lentynos virtuvėms bei cechams.</p>
+            <p>Darbastalius lankstome iš vientiso nerūdijančio plieno lakšto, todėl siūlių, kuriose kaupiasi nešvarumai, nelieka. Plautuvę įviriname į patį paviršių. Paviršių šlifuojame iki matinio, kuris nerodo pirštų atspaudų.</p>
+            <p class="included-title">Kas įskaičiuota</p>
+            <ul class="included">
+              <li>Matavimas pagal vietą</li><li>Lankstymas ir virinimas</li><li>Šlifavimas ir montavimas</li>
+            </ul>
+          </li>
+          
+          <li class="service">
+
+            <h3>Konstrukcijos pagal užsakymą</h3>
+            <p>Stoginės, aikštelės, rėmai ir viskas, kas neturi katalogo numerio.</p>
+            <p>Imamės darbų, kurių nerasite kataloge: stoginės automobiliui, terasos rėmo, pramoninio stelažo, laiptinės aikštelės. Skaičiuojame apkrovas ir pateikiame brėžinį prieš pradėdami virinti.</p>
+            <p class="included-title">Kas įskaičiuota</p>
+            <ul class="included">
+              <li>Apkrovų skaičiavimas</li><li>Brėžinys derinimui</li><li>Gamyba ir montavimas</li>
+            </ul>
+          </li>
+          
+        </ul>
+
+
+        <ul class="section-links">
+          <li><a href="darbai.html">Pažiūrėti pagamintus darbus</a></li><li><a href="kontaktai.html">Parašyti užklausą apie savo darbą</a></li>
+        </ul>
+
+      </div>
+    </section>
+
+    <section class="band" id="prices">
+      <div class="wrap">
+        <div class="band-head reveal">
+          <h2>Kainos</h2>
+          <p>Nuo ko prasideda. Tikslią kainą pasakome po matavimo.</p>
+        </div>
+        <ul class="prices reveal-group">
+          
+          <li class="price">
+            <span class="price-what">Turėklai, tiesūs, už bėgantį metrą</span>
+            <span class="price-eur">nuo 90 €</span>
+          </li>
+          
+          <li class="price">
+            <span class="price-what">Laiptai su metaliniu karkasu</span>
+            <span class="price-eur">nuo 1 400 €</span>
+          </li>
+          
+          <li class="price">
+            <span class="price-what">Stumdomi kiemo vartai su automatika</span>
+            <span class="price-eur">nuo 1 900 €</span>
+          </li>
+          
+          <li class="price">
+            <span class="price-what">Nerūdijančio plieno darbastalis, už m²</span>
+            <span class="price-eur">nuo 320 €</span>
+          </li>
+          
+        </ul>
+        <p class="price-note">Kainos su PVM. Matavimas Vilniuje ir rajone nemokamas. Į kainą įskaičiuotas montavimas ir atliekų išvežimas.</p>
+      </div>
+    </section>
+
+    <section class="band band--brand on-brand" id="cta">
+      <div class="wrap cta reveal">
+        <h2>Išmatuokime ir pasakykime tikslią kainą</h2>
+        <a class="btn" href="kontaktai.html">Gauti pasiūlymą</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer class="colophon">
+    <div class="wrap colophon-grid">
+      <div>
+        <p class="colophon-mark">Plieno linija</p>
+        <p>Laiptai, turėklai, vartai ir nerūdijančio plieno paviršiai</p>
+      </div>
+      <div>
+        <h2>Puslapiai</h2>
+        <ul>
+          <li><a href="index.html">Pradžia</a></li><li><a href="paslaugos.html">Paslaugos</a></li><li><a href="darbai.html">Darbai</a></li><li><a href="apie.html">Apie</a></li><li><a href="kontaktai.html">Kontaktai</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontaktai</h2>
+        <ul>
+          <li><a href="tel:+37060000002">+370 600 00002</a></li>
+          <li><a href="mailto:info@plienolinija.lt">info@plienolinija.lt</a></li>
+          <li>I–V 8–17</li>
+          <li>Cechas: Vilniaus r., Nemėžis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap colophon-fine">
+      <p>© 2026 Plieno linija</p>
+      <p>Pavyzdinė svetainė: įmonė ir jos duomenys išgalvoti. Nuotraukų autoriai ir licencijos surašyti CREDITS.md.</p>
+    </div>
+  </footer>
+
+
+
+  <script src="main.js"></script>
+</body>
+</html>

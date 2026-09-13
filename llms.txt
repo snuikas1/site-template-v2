@@ -1,0 +1,21 @@
+# Plieno linija
+
+> Laiptai, turėklai, vartai ir nerūdijančio plieno paviršiai
+
+Pavyzdinė svetainė: įmonė ir jos duomenys išgalvoti.
+
+## Puslapiai
+
+- [Pradžia](https://snuikas1.github.io/site-template-v2/): Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, gaminame ceche, montuojame patys. Vilnius ir rajonas.
+- [Paslaugos](https://snuikas1.github.io/site-template-v2/paslaugos.html): Laiptai ir turėklai, vartai ir tvoros, nerūdijančio plieno paviršiai ir konstrukcijos pagal užsakymą. Kainos nuo 90 € už bėgantį metrą, matavimas nemokamas.
+- [Darbai](https://snuikas1.github.io/site-template-v2/darbai.html): Sraigtiniai laiptai, balkonų turėklai ir nerūdijančio plieno darbastaliai — dalis darbų, pagamintų ir sumontuotų Nemėžio ceche per pastaruosius metus.
+- [Apie](https://snuikas1.github.io/site-template-v2/apie.html): Metalo cechas Nemėžyje nuo 2012 metų: vienuolika žmonių, apie šimtą darbų per metus, penkerių metų garantija siūlėms ir dangai.
+- [Kontaktai](https://snuikas1.github.io/site-template-v2/kontaktai.html): Parašykite užklausą arba skambinkite +370 600 00002. Matavimas Vilniuje ir rajone nemokamas, atsakome per vieną darbo dieną.
+
+## Kontaktai
+
+- Telefonas: +370 600 00002
+- El. paštas: info@plienolinija.lt
+- Darbo laikas: I–V 8–17
+- Adresas: Gamyklos g. 4, Nemėžis, Vilniaus r., LT-13279
+- Aptarnaujama: Vilnius, Vilniaus rajonas

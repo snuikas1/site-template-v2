@@ -1,0 +1,3 @@
+# site.noindex: true — kol taip, indeksuoti draudžiama.
+User-agent: *
+Disallow: /

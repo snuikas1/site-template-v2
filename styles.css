@@ -1,0 +1,676 @@
+/* Sluoksnis 3 iš 3: komponentų kintamieji ir stiliai.
+   Kryptis: nuotrauka veda, tinklelis ankštas, sekcijas skiria plonos linijos,
+   antraštės daug didesnės už tekstą. Jokių gradientų, stiklo ar šešėlių.
+   Spalvų čia nėra — tik nuorodos į temą (theme.css). Nė vieno hex ar rgb. */
+
+@import url("tokens.css");
+@import url("theme.css");
+
+:root {
+  /* Antraštė */
+  --header-pad: var(--space-16);
+  --header-line: var(--hairline) solid transparent;
+  --anchor-offset: 72px;
+
+  /* Hero paralakso kelias. Tą pačią reikšmę naudoja CSS kadras ir main.js atsarginis kelias. */
+  --hero-shift: 40px;
+
+  /* Mygtukai: 44 px aukščio taikinys su šiuo užpildymu ir 17 px tekstu */
+  --btn-pad: 0.72rem 1.25rem;
+
+  /* Tinkleliai: ankštesni tarpai nei įprasta, kad nuotraukos skaitytųsi kaip lapas */
+  --grid-gap: var(--space-16);
+  --grid-gap-wide: var(--space-32);
+
+  /* Linijos ir juostos */
+  --rule: var(--hairline) solid var(--color-line);
+  --rule-strong: 2px solid var(--color-line-strong);
+  --band-pad: clamp(3rem, 1.5rem + 5.5vw, 6rem);
+  --pad-x: clamp(1.25rem, 4vw, 3rem);
+
+  /* Formos laukai */
+  --field-pad: 0.7rem 0.8rem;
+  --field-line: var(--hairline) solid var(--color-ink-muted);
+
+  /* Galerijos dialogas */
+  --dialog-max: 1100px;
+}
+
+/* Šriftai: tik latin ir latin-ext poaibiai; lietuviškos raidės yra latin-ext ruože. */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('fonts/instrument-sans-latin-ext-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('fonts/instrument-sans-latin-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/instrument-serif-latin-ext-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/instrument-serif-latin-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Atsarginiai šriftai su perskaičiuotais matmenimis: kol krenta woff2, tekstas
+   užima tiek pat vietos, todėl persijungimas nieko nepastumia (CLS = 0).
+   Procentai IŠMATUOTI iš pačių bylų (fontTools: vidutinis raidės plotis, hhea
+   ascent/descent), ne parinkti iš akies. */
+@font-face {
+  font-family: 'Instrument Sans fallback';
+  src: local('Helvetica Neue'), local('Helvetica'), local('Arial');
+  size-adjust: 103.64%;
+  ascent-override: 93.59%;
+  descent-override: 24.12%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Serif fallback';
+  src: local('Georgia'), local('Times New Roman');
+  size-adjust: 73.95%;
+  ascent-override: 133.87%;
+  descent-override: 41.92%;
+  line-gap-override: 0%;
+}
+
+/* --- Pagrindas --- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-underline-offset: 0.2em;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-xl); line-height: var(--leading-snug); }
+
+p { margin: 0 0 var(--space-16); max-width: var(--measure-prose); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+picture { display: block; }
+
+a { color: var(--color-link); text-decoration-thickness: var(--hairline); }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 30;
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  padding: var(--space-12) var(--space-24);
+}
+.skip:focus { left: 0; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--measure-wide);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+/* --- Antraštė --- */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: transparent;
+  border-bottom: var(--header-line);
+}
+/* Riedant žemyn main.js uždeda .is-stuck: atsiranda fonas ir apatinis plaukelis. */
+.masthead.is-stuck {
+  background: var(--color-bg);
+  border-bottom-color: var(--color-line);
+}
+
+.masthead-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  min-height: 68px;
+  padding-block: var(--header-pad);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.nav ul { display: flex; gap: var(--space-24); }
+.nav a {
+  display: block;
+  padding-block: var(--space-12);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+.nav a:hover { border-bottom-color: var(--color-line); }
+.nav a[aria-current] { border-bottom-color: var(--color-accent); }
+
+.nav-toggle {
+  display: none;
+  min-height: 44px;
+  padding: var(--space-8) var(--space-16);
+  background: none;
+  border: var(--hairline) solid var(--color-ink);
+  border-radius: var(--radius);
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+@media (max-width: 759px) {
+  .masthead-row { flex-wrap: wrap; }
+  .nav-toggle { display: block; order: 3; }
+  .nav { display: none; order: 4; width: 100%; }
+  .nav[data-open="true"] { display: block; }
+  .nav ul { flex-direction: column; gap: 0; padding-bottom: var(--space-16); }
+  .nav li + li { border-top: var(--rule); }
+  .nav a { padding-block: var(--space-12); }
+  .wordmark { font-size: var(--text-lg); }
+}
+
+/* --- Mygtukai ---
+   Varinis mygtukas yra vienintelis pirminis veiksmas. Ant tamsios juostos
+   .on-brand persuka --color-accent į šviesesnį varį, todėl taisyklė ta pati. */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--btn-pad);
+  border: var(--hairline) solid var(--color-accent);
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.btn:hover { background: var(--color-accent-strong); border-color: var(--color-accent-strong); }
+
+.btn--ghost {
+  background: none;
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+.btn--ghost:hover { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
+
+.call { white-space: nowrap; }
+@media (max-width: 479px) { .call { display: none; } }
+
+/* --- Kur esate ---
+   Orientyras, ne puošmena: meniu dydžio tekstas, pilkas skirtukas, esamas puslapis
+   be nuorodos. Tie patys žingsniai guli ir BreadcrumbList galvoje. */
+
+.crumbs { padding-block: var(--space-16) 0; font-size: var(--text-sm); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.crumbs li + li::before { content: "/"; margin-right: var(--space-8); color: var(--color-ink-muted); }
+.crumbs a { color: var(--color-ink); }
+.crumbs [aria-current] { color: var(--color-ink-muted); }
+/* Pirmoji juosta po keliu nebeatitinka .band:first-child, todėl liniją nuimame čia. */
+.crumbs + .band { border-top: 0; }
+
+/* --- Sekcijos ir jų antraštės --- */
+
+.band { padding-block: var(--band-pad); border-top: var(--rule); scroll-margin-top: var(--anchor-offset); }
+.band:first-child { border-top: 0; }
+
+.band--brand {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  border-top: 0;
+}
+
+/* Antraštė ir įvadas eina viena eilute: pavadinimas kairėje, sakinys dešinėje. */
+.band-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-16);
+  padding-bottom: var(--space-32);
+  margin-bottom: var(--space-32);
+  border-bottom: var(--rule-strong);
+}
+.band-head p { margin: 0; color: var(--color-ink-muted); }
+@media (min-width: 760px) {
+  .band-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: var(--space-48); }
+  .band-head p { padding-bottom: 0.35em; }
+}
+
+/* --- Hero ---
+   .hero neturi overflow: bet kokia kitokia nei visible reikšmė paverstų jį
+   savo paties slinkties konteineriu ir ViewTimeline sustotų ties nuliu.
+   Kerpama viduje, .hero-frame. */
+
+.hero { position: relative; border-top: 0; padding-block: 0; }
+.hero-frame { position: relative; height: clamp(380px, 62vh, 640px); overflow: hidden; }
+.hero-frame picture, .hero-photo { width: 100%; height: 100%; }
+.hero-photo { object-fit: cover; }
+.hero-inner { position: relative; margin-top: -6.5rem; }
+
+.hero-panel {
+  max-width: 44rem;
+  padding: var(--space-32) var(--space-32) var(--space-32) 0;
+  background: var(--color-bg);
+}
+.hero-panel h1 { margin-bottom: var(--space-16); }
+.hero-panel p { color: var(--color-ink-muted); font-size: var(--text-lg); }
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-12); margin-top: var(--space-24); }
+
+@media (max-width: 759px) {
+  .hero-frame { height: clamp(260px, 42vh, 380px); }
+  .hero-inner { margin-top: -3rem; }
+  .hero-panel { padding: var(--space-24) var(--space-16) 0 0; }
+}
+
+/* --- Paslaugos --- */
+
+.services { display: grid; gap: var(--grid-gap-wide); }
+@media (min-width: 760px) { .services { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.service > picture { margin-bottom: var(--space-16); }
+.service h3 { margin-bottom: var(--space-12); }
+.service p { color: var(--color-ink-muted); }
+
+.included-title {
+  margin: var(--space-24) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+}
+.included { margin-top: var(--space-8); border-top: var(--rule); }
+.included li {
+  padding-block: var(--space-8);
+  border-bottom: var(--rule);
+  font-size: var(--text-sm);
+}
+
+/* Anonsas pradžios puslapyje: tas pats tinklelis, trys nariai, be nuotraukų sąrašo. */
+.teasers { display: grid; gap: var(--grid-gap-wide); }
+@media (min-width: 760px) { .teasers { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.more { display: inline-block; margin-top: var(--space-32); font-size: var(--text-sm); }
+/* Nuorodos į kitas sekcijas: viena tyli eilutė po turiniu, ne mygtukų juosta. */
+.section-links { display: flex; flex-wrap: wrap; gap: var(--space-24); margin-top: var(--space-32); font-size: var(--text-sm); }
+
+/* --- Darbai --- */
+
+.works { display: grid; gap: var(--grid-gap); }
+@media (min-width: 560px) { .works { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .works { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.work-shot {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.work-shot img { width: 100%; }
+.work-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-top: var(--space-8);
+  border-top: var(--rule);
+  margin-top: var(--space-8);
+  font-size: var(--text-sm);
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+.work-place { color: var(--color-ink-muted); white-space: nowrap; }
+.work-shot:hover .work-caption { border-top-color: var(--color-ink); }
+
+/* --- Kaip dirbame --- */
+
+.steps { display: grid; gap: var(--space-32); counter-reset: step; }
+@media (min-width: 760px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--grid-gap-wide); } }
+.step { counter-increment: step; padding-top: var(--space-12); border-top: var(--rule-strong); }
+.step::before {
+  content: counter(step);
+  display: block;
+  margin-bottom: var(--space-8);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-accent);
+}
+.step h3 { margin-bottom: var(--space-8); font-size: var(--text-lg); }
+.step p { color: var(--color-ink-muted); font-size: var(--text-sm); }
+
+/* --- Už ką atsakome --- */
+
+.trust { display: grid; gap: var(--space-32); }
+@media (min-width: 560px) { .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--grid-gap-wide); } }
+@media (min-width: 960px) { .trust { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.trust-item { padding-top: var(--space-12); border-top: var(--rule-strong); }
+.trust-item h3 { margin-bottom: var(--space-8); font-size: var(--text-lg); }
+.trust-item p { color: var(--color-ink-muted); font-size: var(--text-sm); }
+
+/* --- Skaičiai --- */
+
+.stats { display: grid; gap: var(--space-32); }
+@media (min-width: 560px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.stat { padding-top: var(--space-12); border-top: var(--hairline) solid var(--color-line); }
+/* Skaičius ir parašas — atskiromis eilutėmis. Kai skaitiklis suka 0 -> 870, keičiasi
+   skaitmenų kiekis; bendroje eilutėje dėl to persilaužtų parašas ir juosta šokinėtų
+   per vieną eilutę (išmatuota: CLS 0,284). Atskirti jie nejuda. */
+.stat-num { display: block; font-family: var(--font-display); font-size: var(--text-2xl); line-height: var(--leading-snug); }
+.stat-label { display: block; margin-top: var(--space-4); font-size: var(--text-sm); color: var(--color-ink-muted); }
+
+/* --- Atsiliepimai --- */
+
+.quotes { display: grid; gap: var(--grid-gap-wide); }
+@media (min-width: 760px) { .quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.quote { margin: 0; padding-top: var(--space-16); border-top: var(--rule-strong); }
+.quote q {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  quotes: "„" "“";
+}
+.quote figcaption { margin-top: var(--space-12); color: var(--color-ink-muted); font-size: var(--text-sm); }
+
+/* --- Kainos --- */
+
+/* Sąrašas prasideda plaukeliu, ne antra stora linija: sekcijos antraštė virš jo
+   jau turi storą brūkšnį, o dvi storos linijos viena po kitos atrodo kaip klaida. */
+.prices { border-top: var(--rule); }
+.price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-block: var(--space-16);
+  border-bottom: var(--rule);
+}
+.price-what { font-family: var(--font-display); font-size: var(--text-lg); }
+.price-eur { white-space: nowrap; font-size: var(--text-lg); }
+/* Teisinė eilutė: perkelta į savo bloką prie krašto, bet NE sumažinta —
+   ji lieka kūno dydžio, tik pilkesnė ir atskirta linija. */
+.price-note {
+  margin-top: var(--space-32);
+  padding-top: var(--space-16);
+  border-top: var(--rule);
+  max-width: var(--measure-prose);
+  color: var(--color-ink-muted);
+  font-size: var(--text-base);
+}
+
+/* --- Dažni klausimai ---
+   Tikras <details>: veikia be JS, atsidaro ir su klaviatūra. */
+
+.faq { border-top: var(--rule); }
+.faq-item { border-bottom: var(--rule); }
+.faq-item summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-block: var(--space-16);
+  cursor: pointer;
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary h3 { font-size: var(--text-lg); }
+.faq-mark {
+  flex: none;
+  font-size: var(--text-lg);
+  line-height: 1;
+  color: var(--color-ink-muted);
+  transition: rotate var(--dur-1) var(--ease-out);
+}
+.faq-item[open] .faq-mark { rotate: 45deg; }
+.faq-answer {
+  margin: 0;
+  padding-bottom: var(--space-24);
+  color: var(--color-ink-muted);
+  max-width: var(--measure-prose);
+}
+.faq-answer:has(+ .faq-more) { padding-bottom: var(--space-8); }
+.faq-more { margin: 0; padding-bottom: var(--space-24); font-size: var(--text-sm); }
+
+/* --- Apie --- */
+
+.about { display: grid; gap: var(--grid-gap-wide); }
+@media (min-width: 760px) { .about { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
+/* Be nuotraukos tekstas nelieka spaustas į siaurą stulpelį šalia tuščios vietos. */
+.about:not(:has(.about-photo)) { grid-template-columns: minmax(0, 1fr); }
+.about-photo { margin: 0; }
+.about-photo img { width: 100%; }
+
+.values { margin-top: var(--space-48); display: grid; gap: var(--space-24); }
+@media (min-width: 760px) { .values { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--grid-gap-wide); } }
+.value { padding-top: var(--space-12); border-top: var(--rule-strong); }
+.value h3 { font-size: var(--text-lg); margin-bottom: var(--space-8); }
+.value p { color: var(--color-ink-muted); font-size: var(--text-sm); }
+
+/* --- Kontaktai --- */
+
+.contact { display: grid; gap: var(--grid-gap-wide); }
+@media (min-width: 760px) { .contact { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+
+.contact-list { border-top: var(--rule); }
+.contact-list div { padding-block: var(--space-16); border-bottom: var(--rule); }
+.contact-list dt { font-size: var(--text-sm); color: var(--color-ink-muted); }
+.contact-list dd { margin: 0; font-size: var(--text-lg); }
+
+.enquiry {
+  padding: var(--space-32);
+  background: var(--color-surface);
+  border: var(--rule);
+}
+.enquiry h3 { margin-bottom: var(--space-24); }
+.field { display: block; margin-bottom: var(--space-16); }
+.field span { display: block; margin-bottom: var(--space-4); font-size: var(--text-sm); }
+.field input, .field select, .field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--field-pad);
+  border: var(--field-line);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--text-base);
+}
+.field textarea { min-height: 110px; resize: vertical; }
+
+.form-done {
+  padding: var(--space-32);
+  background: var(--color-surface);
+  border: var(--rule);
+  border-left: 3px solid var(--color-accent);
+  font-size: var(--text-lg);
+}
+
+/* --- Kvietimas --- */
+
+.cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-24); }
+.cta h2 { max-width: 22ch; }
+
+/* --- Klaidos puslapis --- */
+
+.notfound h1 { margin-bottom: var(--space-16); }
+.notfound p { color: var(--color-ink-muted); font-size: var(--text-lg); }
+
+/* --- Poraštė --- */
+
+.colophon { border-top: var(--rule-strong); padding-block: var(--band-pad) var(--space-32); }
+.colophon-grid { display: grid; gap: var(--space-32); }
+@media (min-width: 760px) { .colophon-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr); gap: var(--grid-gap-wide); } }
+.colophon h2 { font-size: var(--text-lg); margin-bottom: var(--space-12); }
+.colophon-mark { font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-8); }
+.colophon li { padding-block: var(--space-4); font-size: var(--text-sm); }
+.colophon a { color: var(--color-ink); }
+.colophon-fine {
+  margin-top: var(--space-48);
+  padding-top: var(--space-16);
+  border-top: var(--rule);
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+}
+.colophon-fine p { max-width: none; }
+
+/* --- Galerijos langas --- */
+
+.lightbox {
+  width: min(92vw, var(--dialog-max));
+  padding: 0;
+  border: var(--hairline) solid var(--color-ink);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+.lightbox::backdrop { background: var(--color-veil); }
+/* Atsidaro iš 0,96 masto. Su išjungtomis animacijomis lieka tik galutinė būsena. */
+.js .lightbox[open] { animation: lightbox-in var(--dur-2) var(--ease-out) both; }
+@keyframes lightbox-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.lightbox-photo img { width: 100%; height: auto; }
+.lightbox-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding: var(--space-16) var(--space-24);
+  border-top: var(--rule);
+}
+.lightbox-title { font-family: var(--font-display); font-size: var(--text-lg); }
+.lightbox-credit { color: var(--color-ink-muted); font-size: var(--text-xs); }
+.lightbox-close {
+  min-height: 44px;
+  padding: var(--space-8) var(--space-16);
+  background: none;
+  border: var(--hairline) solid var(--color-ink);
+  border-radius: var(--radius);
+  color: var(--color-ink);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.lightbox-close:hover { background: var(--color-ink); color: var(--color-bg); }
+
+/* --- Pasirodymas slenkant ---
+   Judesį daro perėjimas čia; main.js tik uždeda .is-in, kai IntersectionObserver
+   pamato bloką. Be JS (arba kai --motion-scale: 0) viskas matoma iš karto:
+   paslepiama tik tada, kai main.js pasakė, kad animacijos veikia. */
+.js .reveal,
+.js .reveal-group > *,
+.js [data-hero] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+  /* Eilės numerį (--i) uždeda main.js: tinklelio nariai suplaukia vienas po kito. */
+  transition-delay: calc(var(--i, 0) * var(--dur-1) / 3);
+}
+.js [data-hero] { transition-delay: calc(var(--i, 0) * var(--dur-1) / 2); }
+.js .reveal.is-in,
+.js .reveal-group.is-in > *,
+.js [data-hero].is-in { opacity: 1; transform: translateY(0); }
+
+/* Paspaudimas suspaudžia iki 0,97 ir atleidžia. Tik ten, kur animacijos įjungtos. */
+.js .btn:active,
+.js .work-shot:active,
+.js .nav-toggle:active,
+.js .lightbox-close:active { transform: scale(0.97); transition-duration: var(--dur-1); }
+
+/* --- Hero paralaksas ---
+   Nuotrauka pavažiuoja --hero-shift, kol rėmelis išslenka pro viršų. Laiko juosta
+   kabinama ant .hero-frame, o animuojama nuotrauka jo viduje: animuojamas elementas
+   overflow neturi, todėl ViewTimeline nesustoja ties nuliu. Naršyklėms be
+   animation-timeline tą patį padaro main.js — jis tikrina tą pačią sąlygą. */
+@media (min-width: 760px) {
+  @supports (animation-timeline: view()) {
+    .js .hero-frame { view-timeline: --hero block; }
+    .js .hero-photo {
+      animation: hero-parallax linear both;
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+@keyframes hero-parallax {
+  from { transform: translateY(0px); }
+  to { transform: translateY(var(--hero-shift)); }
+}
+
+/* Ekrano skaitytuvui skirta antraštė: yra dokumente, nėra ekrane. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Sumažintas judesys ---
+   Judesys pašalinamas, o ne sutrumpinamas: galutinė būsena rodoma iš karto. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
