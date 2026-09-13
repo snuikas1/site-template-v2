@@ -3,6 +3,8 @@
         <picture>
           <source type="image/avif" sizes="100vw"
                   srcset="img/{{photoBase}}-900.avif 900w, img/{{photoBase}}-1800.avif 1800w">
+          <source type="image/webp" sizes="100vw"
+                  srcset="img/{{photoBase}}-900.webp 900w, img/{{photoBase}}-1800.webp 1800w">
           <img class="hero-photo" src="img/{{photo}}" alt="{{alt}}"
                sizes="100vw" srcset="img/{{photoBase}}-900.jpg 900w, img/{{photoBase}}-1800.jpg 1800w"
                width="{{width}}" height="{{height}}" fetchpriority="high" decoding="async" data-parallax>

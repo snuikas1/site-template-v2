@@ -6,7 +6,8 @@
 // vardu, koks įrašytas content.json „photo" lauke), surašyk autorių į src/img/credits.json
 // ir paleisk šitą skriptą iš naujo.
 //
-// Įrankiai: tik macOS sips, nieko diegti nereikia. WebP pakopos nėra — sips jo nerašo.
+// Įrankiai: macOS sips (JPEG, AVIF) ir sharp-cli (WebP). Abu jau yra, diegti nieko nereikia.
+// sips WebP NERAŠO — tik skaito; todėl WebP pakopą daro sharp iš jau iškirpto JPEG.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, statSync } from "node:fs";
 
@@ -18,6 +19,8 @@ const content = JSON.parse(readFileSync(here("../content.json"), "utf8"));
 const section = (id) => content.sections.find((s) => s.id === id);
 
 const sips = (args) => execFileSync("/usr/bin/sips", args, { stdio: ["ignore", "pipe", "pipe"] }).toString();
+const SHARP = process.env.HOME + "/.local/node/bin/sharp";
+if (!existsSync(SHARP)) throw new Error(`nėra ${SHARP} — WebP pakopai reikia sharp-cli`);
 const dims = (file) => {
   const out = sips(["-g", "pixelWidth", "-g", "pixelHeight", file]);
   return [+/pixelWidth:\s*(\d+)/.exec(out)[1], +/pixelHeight:\s*(\d+)/.exec(out)[1]];
@@ -80,7 +83,16 @@ for (const item of wanted) {
     if (ab >= jb) throw new Error(`${item.slug}-${w}.avif (${ab} B) nemažesnis už JPEG (${jb} B)`);
     const [aw, ah] = dims(avif);
     if (aw !== w || ah !== h) throw new Error(`${item.slug}-${w}.avif yra ${aw}x${ah}, laukta ${w}x${h}`);
-    report.push({ name: `${item.slug}-${w}`, w, h, jb, ab, q, src: statSync(source).size });
+
+    // Tarpinė pakopa toms naršyklėms, kurios AVIF nemoka (apie 5%): joms WebP vietoj JPEG.
+    const webp = `${IMG}${item.slug}-${w}.webp`;
+    execFileSync(SHARP, ["-i", jpg, "-o", webp, "--", "--format", "webp", "--quality", "75"], { stdio: ["ignore", "pipe", "pipe"] });
+    const wb = statSync(webp).size;
+    if (wb >= jb) throw new Error(`${item.slug}-${w}.webp (${wb} B) nemažesnis už JPEG (${jb} B)`);
+    const [ww, wh] = dims(webp);
+    if (ww !== w || wh !== h) throw new Error(`${item.slug}-${w}.webp yra ${ww}x${wh}, laukta ${w}x${h}`);
+
+    report.push({ name: `${item.slug}-${w}`, w, h, jb, ab, wb, q, src: statSync(source).size });
   }
 }
 
@@ -89,6 +101,7 @@ rmSync(TMP, { recursive: true, force: true });
 const jt = report.reduce((s, r) => s + r.jb, 0);
 const at = report.reduce((s, r) => s + r.ab, 0);
 for (const r of report) {
-  console.log(`${r.name.padEnd(26)} ${String(r.w).padStart(4)}×${String(r.h).padEnd(4)} jpg ${String(r.jb).padStart(7)} B · avif q${r.q} ${String(r.ab).padStart(7)} B · −${(100 - (r.ab / r.jb) * 100).toFixed(0)}%`);
+  console.log(`${r.name.padEnd(26)} ${String(r.w).padStart(4)}×${String(r.h).padEnd(4)} jpg ${String(r.jb).padStart(7)} B · webp ${String(r.wb).padStart(7)} B · avif q${r.q} ${String(r.ab).padStart(7)} B · −${(100 - (r.ab / r.jb) * 100).toFixed(0)}%`);
 }
-console.log(`viso jpg ${(jt / 1024).toFixed(0)} KB · avif ${(at / 1024).toFixed(0)} KB · AVIF lengvesnis ${(100 - (at / jt) * 100).toFixed(0)}%`);
+const wt = report.reduce((s, r) => s + r.wb, 0);
+console.log(`viso jpg ${(jt / 1024).toFixed(0)} KB · webp ${(wt / 1024).toFixed(0)} KB · avif ${(at / 1024).toFixed(0)} KB · AVIF lengvesnis už JPEG ${(100 - (at / jt) * 100).toFixed(0)}%`);

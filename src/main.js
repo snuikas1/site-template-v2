@@ -136,18 +136,21 @@
       button.addEventListener("click", function () {
         opener = button;
         // Didelė nuotrauka atsiranda tik atidarius, kad puslapis krautųsi lengvas.
-        // data-full yra vardas be plėtinio: <picture> pati pasirenka AVIF arba JPEG.
+        // data-full yra vardas be plėtinio: <picture> pati pasirenka AVIF, WebP arba JPEG.
         var base = button.getAttribute("data-full");
         var picture = document.createElement("picture");
         var avif = document.createElement("source");
         avif.type = "image/avif";
         avif.srcset = base + ".avif";
+        var webpSource = document.createElement("source");
+        webpSource.type = "image/webp";
+        webpSource.srcset = base + ".webp";
         var full = document.createElement("img");
         full.src = base + ".jpg";
         full.alt = button.getAttribute("data-alt");
         full.width = 1200;
         full.height = 800;
-        picture.append(avif, full);
+        picture.append(avif, webpSource, full);
         slot.replaceChildren(picture);
         title.textContent = button.getAttribute("data-title");
         credit.textContent = button.getAttribute("data-credit");

@@ -189,7 +189,7 @@ function buildPage({ kind, title, description, list, nav, current, home }) {
 
 // Kiekviena nuotrauka gyvena dviem pločiais ir dviem formatais. Hero — savo pločiais.
 const CARD_WIDTHS = [720, 1200];
-const FORMATS = ["jpg", "avif"];
+const FORMATS = ["jpg", "avif", "webp"];
 
 function imageNames() {
   const names = new Set();
@@ -209,7 +209,7 @@ function imageNames() {
 const usedImages = imageNames();
 for (const f of usedImages) {
   if (!existsSync(here("./src/img/" + f))) {
-    throw new Error(`trūksta src/img/${f} — paleisk node tools/placeholders.mjs`);
+    throw new Error(`trūksta src/img/${f} — paleisk node tools/images.mjs`);
   }
 }
 
@@ -259,5 +259,5 @@ for (const page of pages) {
 const imgs = usedImages.length;
 console.log(`dist/one-page/index.html ir dist/multi-page/: ${pages.map((p) => p.slug).join(", ")}`);
 console.log(`sekcijos: ${[...sections.keys()].join(", ")}`);
-console.log(`nuotraukų bylos: ${imgs} (jpg + avif) · puslapiai: ${written.length}`);
+console.log(`nuotraukų bylos: ${imgs} (jpg + avif + webp) · puslapiai: ${written.length}`);
 if (!existsSync(here("./src/vendor/motion.js"))) throw new Error("trūksta src/vendor/motion.js");
