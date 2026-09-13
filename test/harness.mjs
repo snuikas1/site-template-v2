@@ -9,7 +9,7 @@
 // krisdavo (teisingi žetonai, neteisingai prirašyti elementai), todėl ta koja iš čia išimta.
 import { spawn, spawnSync } from "node:child_process";
 import { createServer } from "node:http";
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, statSync, unlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, statSync, unlinkSync, cpSync } from "node:fs";
 import { extname, join, dirname, normalize } from "node:path";
 
 const EDGE = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge";
@@ -82,13 +82,33 @@ mkdirSync(TMP, { recursive: true });
 // trimis ėjimais: 1280x800, 390x844 ir 1280x800 su emuliuota tamsia tema.
 const CHECK = "/Users/snuikas/.claude/skills/site-verify/scripts/check.mjs";
 
-function runCheck(dir, label) {
-  const res = spawnSync("node", [CHECK, ROOT + dir, `${SHOTS}/verify-${label}`], { encoding: "utf8" });
-  const out = ((res.stdout || "") + (res.stderr || "")).trim();
-  const lines = out.split("\n").map((l) => l.trimEnd());
-  const passes = lines.filter((l) => /^(PASS|FAIL)\s/.test(l.trim()));
-  const problems = res.status === 0 ? [] : lines.filter((l) => l.trim()).map((l) => l.trim());
-  return { ok: res.status === 0, passes, problems, tail: lines.slice(-1)[0] || "" };
+// check.mjs visada atidaro serverio šaknį, tai yra index.html, ir daugiau niekur neina.
+// Paduoti jam katalogą reiškia išmatuoti TIK pradžios puslapį — keturi iš penkių liktų
+// nepatikrinti. Todėl kiekvienas puslapis paeiliui padedamas index.html vieton laikinoje
+// kopijoje. Išmatuota 2026-09-13: be šito v1 ir v2 „green" rėmėsi vienu puslapiu iš šešių.
+function runCheck(build) {
+  const stage = `${TMP}/verify-${build.name}/`;
+  rmSync(stage, { recursive: true, force: true });
+  cpSync(ROOT + build.dir, stage, { recursive: true });
+
+  const results = [];
+  for (const page of build.pages) {
+    if (page.file !== "index.html") cpSync(stage + page.file, stage + "index.html");
+    const slug = page.file.replace(/\.html$/, "");
+    const res = spawnSync("node", [CHECK, stage, `${SHOTS}/verify-${build.name}-${slug}`], { encoding: "utf8" });
+    const out = ((res.stdout || "") + (res.stderr || "")).trim();
+    const lines = out.split("\n").map((l) => l.trimEnd());
+    results.push({
+      file: page.file,
+      slug,
+      ok: res.status === 0,
+      passes: lines.filter((l) => /^(PASS|FAIL)\s/.test(l.trim())),
+      problems: res.status === 0 ? [] : lines.filter((l) => l.trim()).map((l) => l.trim()),
+      tail: lines.slice(-1)[0] || "",
+    });
+  }
+  rmSync(stage, { recursive: true, force: true });
+  return results;
 }
 
 /* --- Serveris --- */
@@ -644,12 +664,14 @@ try {
   /* --- Kontrastas: tikras auditas gyvoje naršyklėje (site-verify check.mjs) --- */
 
   for (const build of BUILDS) {
-    const r = runCheck(build.dir, build.name);
-    if (!r.ok) failed++;
-    report.push({ page: `contrast ${build.name}`, ok: r.ok, weights: {}, problems: r.problems });
-    console.log(`${r.ok ? "PASS" : "FAIL"}  ${("kontrastas " + build.name).padEnd(24)} ${r.passes.map((l) => l.trim().replace(/\s+/g, " ")).join(" · ")}`);
-    console.log(`      ${r.tail}`);
-    if (!r.ok) for (const line of r.problems) console.log("      " + line);
+    for (const r of runCheck(build)) {
+      if (!r.ok) failed++;
+      const label = build.pages.length > 1 ? `${build.name}/${r.slug}` : build.name;
+      report.push({ page: `contrast ${label}`, ok: r.ok, weights: {}, problems: r.problems });
+      console.log(`${r.ok ? "PASS" : "FAIL"}  ${("kontrastas " + label).padEnd(24)} ${r.passes.map((l) => l.trim().replace(/\s+/g, " ")).join(" · ")}`);
+      console.log(`      ${r.tail}`);
+      if (!r.ok) for (const line of r.problems) console.log("      " + line);
+    }
   }
 
   /* --- Kontaktiniai lapai: po vieną kiekvienam variantui --- */
