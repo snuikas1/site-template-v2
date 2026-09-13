@@ -12,8 +12,10 @@ Vienas `content.json` → du variantai:
 - `dist/multi-page/` — penki puslapiai (`index`, `paslaugos`, `darbai`, `apie`, `kontaktai`)
   su bendra antrašte ir porašte.
 
-Jokių priklausomybių, jokio tinklo rinkimo metu, jokio `npm install`. Visos nuorodos
-santykinės, kad veiktų ir GitHub Pages pakatalogyje.
+Jokių priklausomybių, jokio tinklo rinkimo metu, jokio `npm install`, **jokios svetimos
+JS bibliotekos puslapyje**. Visos nuorodos santykinės, kad veiktų ir GitHub Pages
+pakatalogyje; vienintelė išimtis — `404.html`, kurią Pages paduoda iš bet kokio gylio,
+todėl jos nuorodos ir resursai absoliutūs, su priešdėliu iš `site.baseUrl`.
 
 Sekcijos: `hero, services, works, process, trust, stats, testimonials, prices, faq, about,
 contact, cta`. Kiekviena turi savo šabloną `src/templates/<id>.html`; naujos sekcijos
@@ -53,7 +55,8 @@ Privaloma:
 
 ## 4. Nuotraukos ir šriftai
 
-- `<picture>`: AVIF, atsarginis JPEG. WebP pakopos nėra (šio Mac `sips` WebP nerašo).
+- `<picture>`: AVIF, tarpinė WebP pakopa, atsarginis JPEG (`sips` WebP nerašo, todėl ją daro
+  `sharp-cli`). `og:image` — atskira 1200×630 JPEG byla, į puslapį nepatenkanti.
 - Originalai `src/img/_source/`, dydžiai daromi `node tools/images.mjs`, į `dist/` keliauja
   tik tos bylos, kurių prašo įjungtos sekcijos.
 - Kiekvieno AVIF matmenys lyginiai (nelyginis duoda tuščią bylą) ir kiekvienas AVIF
@@ -69,15 +72,33 @@ Privaloma:
 
 - Pasirodymai — `IntersectionObserver`, niekada `scroll` klausytojas.
 - Be JS arba be observerio kiekviena sekcija matoma ir skaitoma.
-- `animation-timeline` visada su `@supports not (animation-timeline: scroll())`.
+- `animation-timeline` niekada be atsarginio kelio: arba `@supports not (...)` taisyklė, arba
+  ta pati sąlyga JS pusėje (`CSS.supports`). Taip padarytas hero paralaksas — CSS
+  `view-timeline`, o senesnėms naršyklėms tą patį poslinkį padaro pasyvus klausytojas.
 - Animuojamas elementas neturi `overflow`, kitokio nei `visible`.
 - Abu transformacijos kadrai užrašomi aiškiai; `transform: none` kaip tikslas draudžiamas.
 - `prefers-reduced-motion: reduce` judesį pašalina, ne sutrumpina.
 
-## 6. Kada laikoma padaryta
+## 6. Paieška ir mašinos
+
+Renkama iš `content.json`, ne rašoma ranka. Privaloma kiekviename puslapyje:
+
+- savas `<meta name="description">`, `<link rel="canonical">` (pradžiai — katalogo adresas,
+  ne `index.html`), pilnas `og:` ir `twitter:` rinkinys su absoliučiu `og:image`;
+- `LocalBusiness` JSON-LD; `WebSite` pradžioje; `BreadcrumbList` vidiniuose puslapiuose,
+  žodis į žodį sutampantis su matomu keliu;
+- **nė vieno tuščio ar išgalvoto lauko.** Nežinomas laukas praleidžiamas; koordinačių
+  (`geo`) šablone nėra sąmoningai — jas įrašo tikras klientas.
+
+Kataloge, greta puslapių: `sitemap.xml` (tik surinkti puslapiai, `lastmod` — rinkimo diena),
+`robots.txt` (seka `site.noindex` abiem kryptimis), `llms.txt`, `404.html`, `favicon.svg`,
+`apple-touch-icon.png` (180×180) ir `site.webmanifest`. Ikonos piešiamos temos spalvomis.
+
+## 7. Kada laikoma padaryta
 
 - `npm run build` padaro abu variantus.
-- `npm test` grįžta su nuliu: devyni patikrinimai, 390×844 ir 1280×800, abu variantai.
+- `npm test` grįžta su nuliu: šešiolika patikrinimų, 390×844 ir 1280×800, abu variantai.
+- Viename puslapyje ne daugiau 20 KB JS ir nė vienos svetimos bibliotekos.
 - `check.mjs` praneša nulį išmatuotų kontrasto klaidų visuose trijuose ėjimuose.
 - LCP ir CLS yra išmatuoti skaičiai, ne spėjimai; LCP ≤ 2500 ms, CLS ≤ 0,1.
 - `grep -nE '#[0-9a-fA-F]{3,8}|rgba?\(' src/styles.css` neranda nieko.

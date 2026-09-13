@@ -12,6 +12,9 @@
   --header-line: var(--hairline) solid transparent;
   --anchor-offset: 72px;
 
+  /* Hero paralakso kelias. Tą pačią reikšmę naudoja CSS kadras ir main.js atsarginis kelias. */
+  --hero-shift: 40px;
+
   /* Mygtukai: 44 px aukščio taikinys su šiuo užpildymu ir 17 px tekstu */
   --btn-pad: 0.72rem 1.25rem;
 
@@ -202,6 +205,7 @@ a:hover { text-decoration-thickness: 2px; }
   font: inherit;
   font-size: var(--text-sm);
   cursor: pointer;
+  transition: transform var(--dur-2) var(--ease-out);
 }
 
 @media (max-width: 759px) {
@@ -232,7 +236,7 @@ a:hover { text-decoration-thickness: 2px; }
   font-size: var(--text-sm);
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
+  transition: background var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), transform var(--dur-2) var(--ease-out);
 }
 .btn:hover { background: var(--color-accent-strong); border-color: var(--color-accent-strong); }
 
@@ -245,6 +249,18 @@ a:hover { text-decoration-thickness: 2px; }
 
 .call { white-space: nowrap; }
 @media (max-width: 479px) { .call { display: none; } }
+
+/* --- Kur esate ---
+   Orientyras, ne puošmena: meniu dydžio tekstas, pilkas skirtukas, esamas puslapis
+   be nuorodos. Tie patys žingsniai guli ir BreadcrumbList galvoje. */
+
+.crumbs { padding-block: var(--space-16) 0; font-size: var(--text-sm); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.crumbs li + li::before { content: "/"; margin-right: var(--space-8); color: var(--color-ink-muted); }
+.crumbs a { color: var(--color-ink); }
+.crumbs [aria-current] { color: var(--color-ink-muted); }
+/* Pirmoji juosta po keliu nebeatitinka .band:first-child, todėl liniją nuimame čia. */
+.crumbs + .band { border-top: 0; }
 
 /* --- Sekcijos ir jų antraštės --- */
 
@@ -324,6 +340,8 @@ a:hover { text-decoration-thickness: 2px; }
 .teasers { display: grid; gap: var(--grid-gap-wide); }
 @media (min-width: 760px) { .teasers { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .more { display: inline-block; margin-top: var(--space-32); font-size: var(--text-sm); }
+/* Nuorodos į kitas sekcijas: viena tyli eilutė po turiniu, ne mygtukų juosta. */
+.section-links { display: flex; flex-wrap: wrap; gap: var(--space-24); margin-top: var(--space-32); font-size: var(--text-sm); }
 
 /* --- Darbai --- */
 
@@ -341,6 +359,7 @@ a:hover { text-decoration-thickness: 2px; }
   cursor: pointer;
   color: inherit;
   font: inherit;
+  transition: transform var(--dur-2) var(--ease-out);
 }
 .work-shot img { width: 100%; }
 .work-caption {
@@ -463,6 +482,8 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--color-ink-muted);
   max-width: var(--measure-prose);
 }
+.faq-answer:has(+ .faq-more) { padding-bottom: var(--space-8); }
+.faq-more { margin: 0; padding-bottom: var(--space-24); font-size: var(--text-sm); }
 
 /* --- Apie --- */
 
@@ -523,6 +544,11 @@ a:hover { text-decoration-thickness: 2px; }
 .cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-24); }
 .cta h2 { max-width: 22ch; }
 
+/* --- Klaidos puslapis --- */
+
+.notfound h1 { margin-bottom: var(--space-16); }
+.notfound p { color: var(--color-ink-muted); font-size: var(--text-lg); }
+
 /* --- Poraštė --- */
 
 .colophon { border-top: var(--rule-strong); padding-block: var(--band-pad) var(--space-32); }
@@ -552,6 +578,12 @@ a:hover { text-decoration-thickness: 2px; }
   color: var(--color-ink);
 }
 .lightbox::backdrop { background: var(--color-veil); }
+/* Atsidaro iš 0,96 masto. Su išjungtomis animacijomis lieka tik galutinė būsena. */
+.js .lightbox[open] { animation: lightbox-in var(--dur-2) var(--ease-out) both; }
+@keyframes lightbox-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
 .lightbox-photo img { width: 100%; height: auto; }
 .lightbox-bar {
   display: flex;
@@ -573,16 +605,53 @@ a:hover { text-decoration-thickness: 2px; }
   font: inherit;
   font-size: var(--text-sm);
   cursor: pointer;
-  transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+  transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out), transform var(--dur-2) var(--ease-out);
 }
 .lightbox-close:hover { background: var(--color-ink); color: var(--color-bg); }
 
 /* --- Pasirodymas slenkant ---
-   Be JS (arba kai --motion-scale: 0) viskas matoma iš karto: paslepiame tik tada,
-   kai main.js pasakė, kad animacijos veikia. */
+   Judesį daro perėjimas čia; main.js tik uždeda .is-in, kai IntersectionObserver
+   pamato bloką. Be JS (arba kai --motion-scale: 0) viskas matoma iš karto:
+   paslepiama tik tada, kai main.js pasakė, kad animacijos veikia. */
 .js .reveal,
 .js .reveal-group > *,
-.js [data-hero] { opacity: 0; }
+.js [data-hero] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+  /* Eilės numerį (--i) uždeda main.js: tinklelio nariai suplaukia vienas po kito. */
+  transition-delay: calc(var(--i, 0) * var(--dur-1) / 3);
+}
+.js [data-hero] { transition-delay: calc(var(--i, 0) * var(--dur-1) / 2); }
+.js .reveal.is-in,
+.js .reveal-group.is-in > *,
+.js [data-hero].is-in { opacity: 1; transform: translateY(0); }
+
+/* Paspaudimas suspaudžia iki 0,97 ir atleidžia. Tik ten, kur animacijos įjungtos. */
+.js .btn:active,
+.js .work-shot:active,
+.js .nav-toggle:active,
+.js .lightbox-close:active { transform: scale(0.97); transition-duration: var(--dur-1); }
+
+/* --- Hero paralaksas ---
+   Nuotrauka pavažiuoja --hero-shift, kol rėmelis išslenka pro viršų. Laiko juosta
+   kabinama ant .hero-frame, o animuojama nuotrauka jo viduje: animuojamas elementas
+   overflow neturi, todėl ViewTimeline nesustoja ties nuliu. Naršyklėms be
+   animation-timeline tą patį padaro main.js — jis tikrina tą pačią sąlygą. */
+@media (min-width: 760px) {
+  @supports (animation-timeline: view()) {
+    .js .hero-frame { view-timeline: --hero block; }
+    .js .hero-photo {
+      animation: hero-parallax linear both;
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+@keyframes hero-parallax {
+  from { transform: translateY(0px); }
+  to { transform: translateY(var(--hero-shift)); }
+}
 
 /* Ekrano skaitytuvui skirta antraštė: yra dokumente, nėra ekrane. */
 .sr-only {

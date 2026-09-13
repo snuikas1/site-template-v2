@@ -41,6 +41,13 @@ const livePages = content.pages
   .map((p) => ({ ...p, sections: p.sections.filter((s) => sectionIds.has(s.id)) }))
   .filter((p) => p.sections.length);
 
+// Tie patys adresai, kuriuos skaičiuoja build.mjs — bet perskaičiuoti čia iš naujo,
+// kad patikrinimas nesiremtų tuo pačiu kodu, kurį tikrina.
+const BASE = site.baseUrl.endsWith("/") ? site.baseUrl : site.baseUrl + "/";
+const BASE_PATH = new URL(BASE).pathname;
+const canonicalFor = (file) => BASE + (file === "index.html" ? "" : file);
+const JS_BUDGET = 20 * 1024;
+
 const BUILDS = [
   {
     name: "one-page",
@@ -58,6 +65,7 @@ const BUILDS = [
       file: `${p.slug}.html`,
       title: `${p.title} — ${site.name}`,
       sections: p.sections.map((s) => s.id),
+      crumb: p.crumb,
     })),
   },
 ];
@@ -117,11 +125,24 @@ const TYPES = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
   ".js": "text/javascript; charset=utf-8", ".jpg": "image/jpeg", ".png": "image/png",
   ".woff2": "font/woff2", ".svg": "image/svg+xml", ".json": "application/json; charset=utf-8",
-  ".md": "text/plain; charset=utf-8",
+  ".md": "text/plain; charset=utf-8", ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8", ".webmanifest": "application/manifest+json",
 };
+// GitHub Pages 404.html paduoda iš bet kokio gylio, o jos resursai absoliutūs
+// (/site-template-v2/styles.css). Kad tai būtų tikrinama taip, kaip veiks gyvai,
+// tikrinamas variantas laikinai prikabinamas prie to paties priešdėlio.
+let mount = null;
 const server = createServer((req, res) => {
   const path = normalize(decodeURIComponent(req.url.split("?")[0])).replace(/^(\.\.[/\\])+/, "");
-  const file = join(ROOT, path === "/" ? "index.html" : path);
+  let file = join(ROOT, path === "/" ? "index.html" : path);
+  if (mount && path.startsWith(mount.prefix)) {
+    file = join(ROOT, mount.dir, path.slice(mount.prefix.length) || "index.html");
+    if (file.startsWith(ROOT) && (!existsSync(file) || statSync(file).isDirectory())) {
+      const missing = join(ROOT, mount.dir, "404.html");
+      res.writeHead(404, { "content-type": TYPES[".html"] }).end(readFileSync(missing));
+      return;
+    }
+  }
   if (!file.startsWith(ROOT) || !existsSync(file) || statSync(file).isDirectory()) {
     res.writeHead(404).end("not found");
     return;
@@ -215,7 +236,7 @@ function onMessage(m) {
   if (msg.method === "Runtime.exceptionThrown") {
     noise.push("exception: " + (msg.params.exceptionDetails.exception?.description || msg.params.exceptionDetails.text));
   } else if (msg.method === "Log.entryAdded" && msg.params.entry.level === "error") {
-    noise.push("log: " + msg.params.entry.text);
+    noise.push("log: " + msg.params.entry.text + (msg.params.entry.url ? " " + msg.params.entry.url : ""));
   } else if (msg.method === "Runtime.consoleAPICalled" && msg.params.type === "error") {
     noise.push("console: " + msg.params.args.map((a) => a.value ?? a.description).join(" "));
   } else if (msg.method === "Inspector.targetCrashed") {
@@ -224,6 +245,9 @@ function onMessage(m) {
     noise.push("request failed: " + msg.params.errorText);
   } else if (msg.method === "Network.requestWillBeSent") {
     requests.push({ id: msg.params.requestId, url: msg.params.request.url, bytes: 0 });
+  } else if (msg.method === "Network.responseReceived") {
+    const r = requests.find((x) => x.id === msg.params.requestId);
+    if (r) r.status = msg.params.response.status;
   } else if (msg.method === "Network.loadingFinished") {
     const r = requests.find((x) => x.id === msg.params.requestId);
     if (r) r.bytes = msg.params.encodedDataLength;
@@ -297,11 +321,21 @@ const INSPECT = `(() => {
     .flatMap((e) => e.getAttribute("srcset").split(",").map((c) => c.trim().split(/\\s+/)[0]))
     .filter(Boolean);
   const robots = document.querySelector('meta[name="robots"]');
+  const canonical = document.querySelector('link[rel="canonical"]');
   const revealed = Array.from(document.querySelectorAll(".reveal, .reveal-group > *, [data-hero]"));
   return {
     lang: document.documentElement.lang,
     title: document.title,
     robots: robots ? robots.content : "",
+    canonical: canonical ? canonical.getAttribute("href") : "",
+    meta: Object.fromEntries(Array.from(document.querySelectorAll("meta[name], meta[property]"))
+      .map((m) => [m.getAttribute("name") || m.getAttribute("property"), m.getAttribute("content") || ""])),
+    jsonld: Array.from(document.querySelectorAll('script[type="application/ld+json"]')).map((n) => n.textContent),
+    crumbs: Array.from(document.querySelectorAll(".crumbs li")).map((li) => ({
+      name: li.textContent.trim(),
+      href: li.querySelector("a") ? li.querySelector("a").getAttribute("href") : "",
+      current: !!li.querySelector('[aria-current="page"]'),
+    })),
     h1s: Array.from(document.querySelectorAll("h1")).map((h) => h.textContent.trim()),
     links, assets, sets,
     picked: Array.from(document.images).map((i) => i.currentSrc),
@@ -339,8 +373,24 @@ const INSPECT = `(() => {
   };
 })()`;
 
+// JSON-LD: kiekvienas objektas privalo turėti @type, ir nė viena reikšmė negali būti tuščia.
+// Tuščias laukas atrodo kaip užpildytas ir praslysta pro akis — tokio geriau nerašyti visai.
+function ldProblems(node, path, out = []) {
+  if (Array.isArray(node)) node.forEach((v, i) => ldProblems(v, `${path}[${i}]`, out));
+  else if (node && typeof node === "object") {
+    if (!node["@type"]) out.push(`${path} be @type`);
+    for (const [k, v] of Object.entries(node)) ldProblems(v, `${path}.${k}`, out);
+  } else if (typeof node === "string" && !node.trim()) out.push(`${path} tuščias`);
+  return out;
+}
+
+const OG_TAGS = ["og:type", "og:site_name", "og:locale", "og:title", "og:description", "og:url",
+  "og:image", "og:image:width", "og:image:height",
+  "twitter:card", "twitter:title", "twitter:description", "twitter:image"];
+
 let failed = 0;
 const report = [];
+const canonicals = new Map();
 const vitalsLog = [];
 const titles = new Map();
 const shots = { "one-page": [], "multi-page": [] };
@@ -350,6 +400,7 @@ try {
     for (const page of build.pages) {
       const problems = [];
       const weights = {};
+      const jsWeights = {};
       const edge = await startBrowser();
       const url = base + build.dir + page.file;
       const pageDir = dirname(build.dir + page.file);
@@ -384,6 +435,57 @@ try {
           problems.push(`${at} antraštė kartojasi su ${titles.get(titleKey)}`);
         }
         titles.set(titleKey, page.file);
+        // Galvutė paieškai ir dalyboms. Canonical skaičiuojamas iš content.json, o ne
+        // imamas iš puslapio: kitaip tikrintume tik tai, kad puslapis sutampa su savimi.
+        const wantCanonical = canonicalFor(page.file);
+        if (s.canonical !== wantCanonical) problems.push(`${at} canonical yra "${s.canonical}", laukta "${wantCanonical}"`);
+        const canonKey = build.name + "|" + s.canonical;
+        if (canonicals.has(canonKey) && canonicals.get(canonKey) !== page.file) {
+          problems.push(`${at} canonical kartojasi su ${canonicals.get(canonKey)}`);
+        }
+        canonicals.set(canonKey, page.file);
+        if (!(s.meta.description || "").trim()) problems.push(`${at} nėra meta description`);
+        for (const tag of OG_TAGS) if (!(s.meta[tag] || "").trim()) problems.push(`${at} trūksta ${tag}`);
+        if (s.meta["og:url"] !== wantCanonical) problems.push(`${at} og:url yra "${s.meta["og:url"]}"`);
+        if (s.meta["og:title"] !== s.title) problems.push(`${at} og:title nesutampa su antrašte`);
+        if (s.meta["og:description"] !== s.meta.description) problems.push(`${at} og:description nesutampa su description`);
+        if (s.meta["twitter:card"] !== "summary_large_image") problems.push(`${at} twitter:card yra "${s.meta["twitter:card"]}"`);
+        const ogImage = s.meta["og:image"] || "";
+        if (!ogImage.startsWith(BASE)) problems.push(`${at} og:image ne absoliutus: "${ogImage}"`);
+        else if (!existsSync(join(ROOT, build.dir, ogImage.slice(BASE.length)))) {
+          problems.push(`${at} og:image nerodo į bylą: ${ogImage}`);
+        }
+
+        // JSON-LD: kiekvienas blokas parsinamas, su @type ir be tuščių reikšmių.
+        const ldTypes = [];
+        let ldCrumb = null;
+        for (const raw of s.jsonld) {
+          let data;
+          try { data = JSON.parse(raw); } catch (e) { problems.push(`${at} JSON-LD neperskaitomas: ${e.message}`); continue; }
+          ldTypes.push(data["@type"]);
+          if (data["@type"] === "BreadcrumbList") ldCrumb = data;
+          for (const bad of ldProblems(data, data["@type"] || "?")) problems.push(`${at} JSON-LD ${bad}`);
+        }
+        const wantTypes = ["LocalBusiness"];
+        if (page.file === "index.html") wantTypes.push("WebSite");
+        if (page.crumb) wantTypes.push("BreadcrumbList");
+        for (const t of wantTypes) if (!ldTypes.includes(t)) problems.push(`${at} nėra ${t} JSON-LD bloko`);
+        for (const t of ldTypes) if (!wantTypes.includes(t)) problems.push(`${at} netikėtas JSON-LD blokas: ${t}`);
+
+        // Matomas kelias ir BreadcrumbList turi sakyti tą patį — kitaip vienas iš jų meluoja.
+        if (page.crumb) {
+          const shown = s.crumbs.map((c) => c.name).join(" / ");
+          const said = (ldCrumb?.itemListElement || []).map((i) => i.name).join(" / ");
+          if (!shown) problems.push(`${at} nėra matomo kelio`);
+          else if (shown !== said) problems.push(`${at} matomas kelias "${shown}" nesutampa su BreadcrumbList "${said}"`);
+          if (s.crumbs.length && (!s.crumbs.at(-1).current || s.crumbs.at(-1).href)) {
+            problems.push(`${at} paskutinis kelio žingsnis turi būti be nuorodos ir su aria-current="page"`);
+          }
+          if (s.crumbs[0] && !s.crumbs[0].href) problems.push(`${at} kelio pradžia be nuorodos`);
+        } else if (s.crumbs.length) {
+          problems.push(`${at} kelias rodomas puslapyje, kuris jo neturi`);
+        }
+
         if (s.scrollW > s.innerW + 1) problems.push(`${at} horizontalus perpildymas: ${s.scrollW} > ${s.innerW}`);
         if (!s.revealCount) problems.push(`${at} puslapyje nėra nė vieno pasirodančio bloko`);
         if (s.hidden) problems.push(`${at} ${s.hidden} iš ${s.revealCount} blokų liko permatomi po slinkties`);
@@ -465,6 +567,16 @@ try {
         const bytes = requests.reduce((sum, r) => sum + r.bytes, 0);
         weights[w] = bytes;
         if (bytes > BYTE_BUDGET) problems.push(`${at} persiųsta ${(bytes / 1024).toFixed(0)} KB, virš 1,5 MB`);
+
+        // Puslapio JS telpa į 20 KB, ir Motion nebėra: nei bylos, nei užklausos.
+        // Buvo 137 KB vienoje bibliotekoje prieš 9 KB savo kodo — todėl riba čia ir atsirado.
+        const js = requests.filter((r) => /\.js$/.test(new URL(r.url).pathname));
+        const jsBytes = js.reduce((sum, r) => sum + r.bytes, 0);
+        jsWeights[w] = jsBytes;
+        if (jsBytes > JS_BUDGET) problems.push(`${at} JS ${(jsBytes / 1024).toFixed(1)} KB, virš ${JS_BUDGET / 1024} KB`);
+        for (const r of js) {
+          if (/vendor\/motion/.test(r.url)) problems.push(`${at} puslapis vis dar užsako ${r.url.replace(base, "")}`);
+        }
 
         // Meniu žymė: keliuose puslapiuose — aria-current="page", viename — "true" pagal matomą sekciją.
         if (build.name === "multi-page") {
@@ -606,7 +718,7 @@ try {
       const ok = problems.length === 0;
       if (!ok) failed++;
       report.push({ page: build.name + "/" + page.file, ok, weights, problems });
-      const kb = WIDTHS.map(({ w }) => `${w}px ${(weights[w] / 1024).toFixed(0)} KB`).join(", ");
+      const kb = WIDTHS.map(({ w }) => `${w}px ${(weights[w] / 1024).toFixed(0)} KB (JS ${(jsWeights[w] / 1024).toFixed(1)} KB)`).join(", ");
       const mine = vitalsLog.filter((v) => v.page === build.name + "/" + page.file);
       const vit = mine.map((v) => `${v.w}px LCP ${v.lcp.toFixed(0)} ms CLS ${v.cls.toFixed(3)}`).join(", ");
       report.at(-1).vitals = mine;
@@ -659,6 +771,171 @@ try {
     if (!ok) failed++;
     report.push({ page: "testimonials enabled: false", ok, weights: {}, problems });
     console.log(`${ok ? "PASS" : "FAIL"}  ${"išjungta sekcija".padEnd(24)} testinis rinkimas${ok ? "" : "\n      " + problems.join("\n      ")}`);
+  }
+
+  /* --- Bylos paieškos varikliams ir modeliams: sitemap, robots, llms, 404, ikonos --- */
+
+  for (const build of BUILDS) {
+    const problems = [];
+    const dir = ROOT + build.dir;
+    const edge = await startBrowser();
+    await send("Emulation.setDeviceMetricsOverride", { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false });
+    await load(base + build.dir + build.pages[0].file);
+
+    // sitemap.xml perskaitomas tikru XML parseriu naršyklėje, ne regexu: netaisyklingas
+    // XML čia turi kristi taip pat, kaip kristų pas Google.
+    const sm = await evaluate(`(async () => {
+      const res = await fetch("sitemap.xml");
+      const doc = new DOMParser().parseFromString(await res.text(), "application/xml");
+      const bad = doc.querySelector("parsererror");
+      return {
+        status: res.status,
+        error: bad ? bad.textContent.replace(/\s+/g, " ").trim() : "",
+        root: doc.documentElement.nodeName,
+        ns: doc.documentElement.namespaceURI,
+        locs: Array.from(doc.getElementsByTagName("loc")).map((n) => n.textContent),
+        lastmods: Array.from(doc.getElementsByTagName("lastmod")).map((n) => n.textContent),
+      };
+    })()`);
+    if (sm.status !== 200) problems.push(`sitemap.xml atsakė ${sm.status}`);
+    if (sm.error) problems.push(`sitemap.xml nėra taisyklingas XML: ${sm.error}`);
+    if (sm.root !== "urlset") problems.push(`sitemap.xml šaknis yra <${sm.root}>`);
+    if (sm.ns !== "http://www.sitemaps.org/schemas/sitemap/0.9") problems.push(`sitemap.xml vardų sritis yra ${sm.ns}`);
+    const wantLocs = build.pages.map((p) => canonicalFor(p.file)).sort().join(", ");
+    const gotLocs = [...sm.locs].sort().join(", ");
+    if (gotLocs !== wantLocs) problems.push(`sitemap.xml surašo [${gotLocs}], laukta [${wantLocs}]`);
+    if (sm.lastmods.length !== sm.locs.length) problems.push("sitemap.xml ne prie kiekvieno adreso turi lastmod");
+    for (const d of sm.lastmods) if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) problems.push(`sitemap.xml lastmod yra "${d}"`);
+
+    // robots.txt privalo sekti site.noindex vėliavėlę, o ne būti įrašytas ranka.
+    // Motion pašalintas: kataloge neturi likti nei bylos, nei licencijos.
+    if (existsSync(dir + "vendor")) problems.push("dist viduje liko vendor/ katalogas");
+
+    const robots = readFileSync(dir + "robots.txt", "utf8");
+    if (!/^user-agent:\s*\*/im.test(robots)) problems.push("robots.txt be User-agent eilutės");
+    if (site.noindex) {
+      if (!/^disallow:\s*\/\s*$/im.test(robots)) problems.push("robots.txt neuždaro svetainės, nors site.noindex yra true");
+      if (/^sitemap:/im.test(robots)) problems.push("robots.txt siūlo sitemap, nors indeksuoti draudžiama");
+    } else {
+      if (!/^allow:\s*\/\s*$/im.test(robots)) problems.push("robots.txt neatidaro svetainės, nors site.noindex yra false");
+      if (!robots.includes(`Sitemap: ${BASE}sitemap.xml`)) problems.push("robots.txt be Sitemap eilutės");
+    }
+
+    const llms = readFileSync(dir + "llms.txt", "utf8");
+    if (!llms.startsWith(`# ${site.name}\n`)) problems.push("llms.txt neprasideda įmonės vardu antraštėje");
+    if (!/^> \S/m.test(llms)) problems.push("llms.txt be santraukos citatoje");
+    if (!/^## /m.test(llms)) problems.push("llms.txt be nė vienos sekcijos");
+    if (llms.length < 400) problems.push(`llms.txt per trumpas: ${llms.length} ženklų`);
+    const llmsUrls = [...llms.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1]);
+    if (llmsUrls.length < livePages.length) problems.push(`llms.txt turi ${llmsUrls.length} nuorodas, laukta bent ${livePages.length}`);
+    for (const u of llmsUrls) if (!u.startsWith(BASE)) problems.push(`llms.txt nuoroda ne absoliuti: ${u}`);
+    for (const p of livePages) if (!llms.includes(p.title)) problems.push(`llms.txt nemini puslapio „${p.title}“`);
+
+    // 404 iš gilaus kelio: Pages ją paduoda iš bet kokios vietos, todėl jos resursai
+    // absoliutūs. Katalogas laikinai prikabinamas prie baseUrl priešdėlio.
+    mount = { prefix: BASE_PATH, dir: build.dir };
+    const deep = base.replace(/\/$/, "") + BASE_PATH + "nera/tokio/puslapio/";
+    await load(deep);
+    await sleep(300);
+    const lost = await evaluate(INSPECT);
+    // Paties dokumento 404 yra šito puslapio esmė, ne klaida; visa kita — klaida.
+    for (const n of noise) if (!n.includes(deep)) problems.push(`404 ${n}`);
+    if (lost.h1s.length !== 1) problems.push(`404: ${lost.h1s.length} h1 elementai`);
+    if (!/noindex/.test(lost.robots)) problems.push(`404: robots meta yra "${lost.robots}"`);
+    if (lost.canonical) problems.push(`404: klaidos puslapis turi canonical (${lost.canonical})`);
+    if (!/Instrument Sans/.test(lost.font)) problems.push(`404: stiliai neįsikėlė, šriftas ${lost.font}`);
+    if (!lost.sectionIds.length) problems.push("404: nėra turinio sekcijos");
+    for (const r of requests) {
+      if (r.url === deep) {
+        if (r.status !== 404) problems.push(`404 puslapis atsakė ${r.status}, o turi 404`);
+      } else if (r.status !== 200) {
+        problems.push(`404 puslapio resursas ${r.url.replace(base, "/")} atsakė ${r.status}`);
+      }
+    }
+    for (const href of lost.links) {
+      if (/^(tel:|mailto:|#)/.test(href)) continue;
+      if (!href.startsWith(BASE_PATH)) { problems.push(`404: nuoroda ne absoliuti: ${href}`); continue; }
+      const rel = href.slice(BASE_PATH.length).split("#")[0] || "index.html";
+      if (!existsSync(join(ROOT, build.dir, rel))) problems.push(`404: neveikianti nuoroda ${href}`);
+    }
+
+    // Ikonos ir dalybų nuotrauka: tikras dekodavimas, o ne 200 atsakymas. Deklaruoti
+    // matmenys lyginami su tikraisiais — nesutampantys og:image dydžiai apkarpo kortelę.
+    const icons = await evaluate(`(async () => {
+      const out = { declared: {} };
+      for (const tag of ["og:image:width", "og:image:height"]) {
+        const m = document.querySelector('meta[property="' + tag + '"]');
+        out.declared[tag] = m ? +m.content : 0;
+      }
+      for (const name of [${JSON.stringify(site.ogImage)}, "apple-touch-icon.png"]) {
+        const res = await fetch(${JSON.stringify(BASE_PATH)} + name);
+        if (!res.ok) { out[name] = { status: res.status }; continue; }
+        const bmp = await createImageBitmap(await res.blob());
+        out[name] = { status: res.status, w: bmp.width, h: bmp.height };
+      }
+      const svg = await fetch(${JSON.stringify(BASE_PATH)} + "favicon.svg");
+      out["favicon.svg"] = { status: svg.status, head: (await svg.text()).slice(0, 30) };
+      const man = await fetch(${JSON.stringify(BASE_PATH)} + "site.webmanifest");
+      out.manifest = { status: man.status, json: await man.json().catch(() => null) };
+      return out;
+    })()`);
+    const shot = icons[site.ogImage];
+    if (shot.status !== 200) problems.push(`og:image byla atsakė ${shot.status}`);
+    else if (shot.w !== icons.declared["og:image:width"] || shot.h !== icons.declared["og:image:height"]) {
+      problems.push(`og:image yra ${shot.w}x${shot.h}, o galvutėje parašyta ${icons.declared["og:image:width"]}x${icons.declared["og:image:height"]}`);
+    }
+    const touch = icons["apple-touch-icon.png"];
+    if (touch.status !== 200) problems.push(`apple-touch-icon.png atsakė ${touch.status}`);
+    else if (touch.w !== 180 || touch.h !== 180) problems.push(`apple-touch-icon.png yra ${touch.w}x${touch.h}, laukta 180x180`);
+    if (icons["favicon.svg"].status !== 200 || !icons["favicon.svg"].head.includes("<svg")) problems.push("favicon.svg neatsidaro");
+    const man = icons.manifest.json;
+    if (icons.manifest.status !== 200 || !man) problems.push("site.webmanifest neatsidaro arba nėra JSON");
+    else for (const key of ["name", "short_name", "theme_color", "background_color"]) {
+      if (!man[key]) problems.push(`site.webmanifest be ${key}`);
+    }
+    mount = null;
+    await stopBrowser(edge);
+
+    const ok = problems.length === 0;
+    if (!ok) failed++;
+    report.push({ page: `seo ${build.name}`, ok, weights: {}, problems });
+    const line = `sitemap ${sm.locs.length} adr. · robots ${site.noindex ? "disallow" : "allow"} · llms.txt ${llms.length} B · 404 iš gilaus kelio`;
+    console.log(`${ok ? "PASS" : "FAIL"}  ${("seo " + build.name).padEnd(24)} ${line}${ok ? "" : "\n      " + problems.join("\n      ")}`);
+  }
+
+  /* --- Kita site.noindex pusė: robots.txt privalo apsiversti kartu su vėliavėle --- */
+
+  {
+    const problems = [];
+    const variant = JSON.parse(readFileSync(ROOT + "content.json", "utf8"));
+    variant.site.noindex = !site.noindex;
+    const contentFile = TMP + "/content-noindex.json";
+    const distDir = TMP + "/dist-noindex/";
+    writeFileSync(contentFile, JSON.stringify(variant));
+    const built = spawnSync("node", [ROOT + "build.mjs"], {
+      env: { ...process.env, CONTENT_FILE: contentFile, DIST_DIR: distDir },
+      encoding: "utf8",
+    });
+    if (built.status !== 0) problems.push("testinis rinkimas krito: " + (built.stderr || "").trim());
+    else {
+      for (const name of ["one-page", "multi-page"]) {
+        const robots = readFileSync(`${distDir}${name}/robots.txt`, "utf8");
+        const html = readFileSync(`${distDir}${name}/index.html`, "utf8");
+        if (variant.site.noindex) {
+          if (!/^disallow:\s*\/\s*$/im.test(robots)) problems.push(`${name}: robots.txt neuždarė svetainės su noindex: true`);
+          if (!/name="robots" content="noindex/.test(html)) problems.push(`${name}: puslapyje nėra noindex meta su noindex: true`);
+        } else {
+          if (!/^allow:\s*\/\s*$/im.test(robots)) problems.push(`${name}: robots.txt neatidarė svetainės su noindex: false`);
+          if (!robots.includes(`Sitemap: ${BASE}sitemap.xml`)) problems.push(`${name}: robots.txt be Sitemap eilutės su noindex: false`);
+          if (/name="robots"/.test(html)) problems.push(`${name}: puslapyje liko robots meta su noindex: false`);
+        }
+      }
+    }
+
+    const ok = problems.length === 0;
+    if (!ok) failed++;
+    report.push({ page: `noindex: ${!site.noindex}`, ok, weights: {}, problems });
+    console.log(`${ok ? "PASS" : "FAIL"}  ${("noindex: " + !site.noindex).padEnd(24)} robots.txt ir meta apsiverčia${ok ? "" : "\n      " + problems.join("\n      ")}`);
   }
 
   /* --- Kontrastas: tikras auditas gyvoje naršyklėje (site-verify check.mjs) --- */

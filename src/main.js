@@ -1,95 +1,92 @@
-// Motion (vendor/motion.js, MIT) prisistato kaip globalus `Motion`. Be paketų tvarkyklės, be CDN.
-// Septyni judesiai ir nė vieno daugiau. Jei animacijos išjungtos (prefers-reduced-motion arba
-// --motion-scale: 0), šitas failas nieko neanimuoja, o puslapis lieka galutinėje būsenoje.
+// Jokių priklausomybių: judesį daro CSS, o šitas failas tik laiku uždeda klases.
+// Septyni judesiai ir nė vieno daugiau. Jei animacijos išjungtos (prefers-reduced-motion
+// arba --motion-scale: 0), šitas failas nieko neanimuoja, o puslapis lieka galutinėje būsenoje.
 (function () {
   "use strict";
 
   var motionOn = document.documentElement.classList.contains("js");
-  var M = window.Motion || {};
-  var animate = M.animate, inView = M.inView, scroll = M.scroll, stagger = M.stagger, press = M.press;
 
-  // Trukmės ir greitėjimas imami iš tokens.css, kad viena vieta valdytų ir CSS, ir JS.
-  // Perrašius temą animacijos pasikeičia kartu su ja, o ne lieka įrašytos čia.
+  // Skaitiklio trukmė imama iš tokens.css: perrašius temą pasikeičia ir ji.
+  // Visos kitos trukmės ir greitėjimai liko CSS pusėje, todėl čia jų nebereikia.
   var css = getComputedStyle(document.documentElement);
-  function seconds(name) {
-    var raw = css.getPropertyValue(name).trim();
+  var countFor = (function () {
+    var raw = css.getPropertyValue("--dur-count").trim();
     var n = parseFloat(raw);
-    if (!isFinite(n)) return 0.3;
-    return /ms$/.test(raw) ? n / 1000 : n;
-  }
-  function easing(name) {
-    var m = /cubic-bezier\(([^)]+)\)/.exec(css.getPropertyValue(name));
-    return m ? m[1].split(",").map(Number) : "easeOut";
-  }
-  var quick = seconds("--dur-1"), mid = seconds("--dur-2"), slow = seconds("--dur-3");
-  var countFor = seconds("--dur-count");
-  var softOut = easing("--ease-out");
+    if (!isFinite(n)) return 1200;
+    return /ms$/.test(raw) ? n : n * 1000;
+  })();
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  // Vienas stebėtojas visai grupei: suveikia vieną kartą ir elementą paleidžia.
+  // Apatinis kraštas patrauktas 10 %, kad blokas pasirodytų jau tikrai matomas.
+  function onceSeen(threshold, act) {
+    return new IntersectionObserver(function (entries, io) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        io.unobserve(entry.target);
+        act(entry.target);
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: threshold });
+  }
+
+  // Eilės numeris: iš jo CSS pasidaro transition-delay, todėl nariai suplaukia vienas po kito.
+  function order(items) {
+    items.forEach(function (el, i) { el.style.setProperty("--i", i); });
+  }
 
   /* --- 1. Hero: antraštė, sakinys ir mygtukai suplaukia pakrovus, vieną kartą. --- */
 
   function heroIn() {
     var lines = $$("[data-hero]");
     if (!lines.length) return;
-    animate(lines,
-      { opacity: [0, 1], transform: ["translateY(16px)", "translateY(0px)"] },
-      { duration: slow, delay: stagger(quick / 2), ease: softOut });
+    order(lines);
+    // Du kadrai laukimo: klasė turi atsirasti po to, kai naršyklė jau nupiešė pradinę
+    // būseną. Uždėta tame pačiame kadre ji perėjimo neduotų — tekstas tiesiog atsirastų.
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        lines.forEach(function (el) { el.classList.add("is-in"); });
+      });
+    });
   }
 
   /* --- 2. Sekcijos ir tinklelių nariai: pasirodo įslinkę į ekraną, vieną kartą. --- */
 
   function reveals() {
-    $$(".reveal").forEach(function (el) {
-      inView(el, function () {
-        if (el.dataset.shown) return;
-        el.dataset.shown = "1";
-        animate(el, { opacity: [0, 1], transform: ["translateY(16px)", "translateY(0px)"] },
-          { duration: slow, ease: softOut });
-      }, { amount: 0.15 });
-    });
-
+    var show = onceSeen(0, function (el) { el.classList.add("is-in"); });
+    $$(".reveal").forEach(function (el) { show.observe(el); });
     $$(".reveal-group").forEach(function (group) {
-      var kids = $$(":scope > *", group);
-      if (!kids.length) return;
-      inView(group, function () {
-        if (group.dataset.shown) return;
-        group.dataset.shown = "1";
-        animate(kids, { opacity: [0, 1], transform: ["translateY(16px)", "translateY(0px)"] },
-          { duration: slow, delay: stagger(quick / 3), ease: softOut });
-      }, { amount: 0.1 });
+      order($$(":scope > *", group));
+      show.observe(group);
     });
   }
 
   /* --- 3. Skaičiai: suskaičiuoja per 1,2 s, kai juostą pamato akis. --- */
 
   function counters() {
-    $$("[data-count]").forEach(function (el) {
-      var end = Number(el.getAttribute("data-count"));
-      if (!isFinite(end)) return;
-      var final = el.textContent;
-      inView(el, function () {
-        if (el.dataset.counted) return;
-        el.dataset.counted = "1";
-        animate(0, end, {
-          duration: countFor,
-          ease: "easeOut",
-          onUpdate: function (v) { el.textContent = String(Math.round(v)); },
-          onComplete: function () { el.textContent = final; },
-        });
-      }, { amount: 0.5 });
-    });
+    var watch = onceSeen(0.5, countUp);
+    $$("[data-count]").forEach(function (el) { watch.observe(el); });
   }
 
-  /* --- 4. Mygtukai: paspaudimas suspaudžia iki 0,97 ir atleidžia. Užvedimas — CSS. --- */
-
-  function presses() {
-    press(".btn, .work-shot, .nav-toggle, .lightbox-close", function (el) {
-      animate(el, { scale: 0.97 }, { duration: quick, ease: softOut });
-      return function () { animate(el, { scale: 1 }, { duration: mid, ease: softOut }); };
-    });
+  function countUp(el) {
+    var end = Number(el.getAttribute("data-count"));
+    if (!isFinite(end)) return;
+    // Galutinė reikšmė paimama iš paties puslapio: skaitiklis grįžta būtent į ją,
+    // su tarpais tarp tūkstančių ir viskuo, ką parašė content.json.
+    var final = el.textContent;
+    var started = 0;
+    var step = function (now) {
+      if (!started) started = now;
+      var t = Math.min(1, (now - started) / countFor);
+      // Sulėtėjimas gale, kaip ir --ease-out: greitai pradeda, švelniai sustoja.
+      el.textContent = t < 1 ? String(Math.round(end * (1 - Math.pow(1 - t, 3)))) : final;
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
   }
+
+  /* --- 4. Mygtukai: paspaudimą suspaudžia CSS (.js .btn:active). Čia nieko nereikia. --- */
 
   /* --- 5. Antraštė: po 24 px slinkties gauna foną ir apatinį plaukelį. --- */
 
@@ -103,26 +100,43 @@
       stuck = next;
       bar.classList.toggle("is-stuck", stuck);
     };
-    if (motionOn && scroll) scroll(function (progress, info) { mark(info.y.current); });
-    else {
-      addEventListener("scroll", function () { mark(window.scrollY); }, { passive: true });
-      mark(window.scrollY);
-    }
+    addEventListener("scroll", function () { mark(window.scrollY); }, { passive: true });
+    mark(window.scrollY);
   }
 
-  /* --- 6. Hero nuotrauka: iki 40 px paralakso, susieto su slinktimi. Tik nuo 760 px. --- */
+  /* --- 6. Hero nuotrauka: paralaksą suka CSS (view-timeline styles.css byloje).
+     Čia lieka atsarginis kelias toms naršyklėms, kurios animation-timeline dar nemoka;
+     sąlyga ta pati, kaip @supports taisyklėje, todėl abu keliai kartu nepasileidžia. --- */
 
   function parallax() {
     var photo = $("[data-parallax]");
-    var frame = photo && photo.parentElement;
     if (!photo || !matchMedia("(min-width: 760px)").matches) return;
-    scroll(
-      animate(photo, { transform: ["translateY(0px)", "translateY(40px)"] }, { ease: "linear" }),
-      { target: frame, offset: ["start start", "end start"] }
-    );
+    if (window.CSS && CSS.supports("animation-timeline: view()")) return;
+    var frame = photo.parentElement;
+    var shift = parseFloat(css.getPropertyValue("--hero-shift")) || 0;
+    var top = 0, height = 0, queued = false;
+    var measure = function () {
+      var box = frame.getBoundingClientRect();
+      top = box.top + window.scrollY;
+      height = box.height;
+    };
+    var draw = function () {
+      queued = false;
+      var progress = height ? (window.scrollY - top) / height : 0;
+      progress = progress < 0 ? 0 : progress > 1 ? 1 : progress;
+      photo.style.transform = "translateY(" + (progress * shift).toFixed(1) + "px)";
+    };
+    measure();
+    draw();
+    addEventListener("scroll", function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(draw);
+    }, { passive: true });
+    addEventListener("resize", function () { measure(); draw(); }, { passive: true });
   }
 
-  /* --- 7. Galerijos langas: atsidaro iš 0,96 masto. --- */
+  /* --- 7. Galerijos langas: atsidaro iš 0,96 masto (CSS animacija .js .lightbox[open]). --- */
 
   function gallery() {
     var dialog = $("#darbo-langas");
@@ -155,10 +169,6 @@
         title.textContent = button.getAttribute("data-title");
         credit.textContent = button.getAttribute("data-credit");
         dialog.showModal();
-        if (motionOn) {
-          animate(dialog, { opacity: [0, 1], transform: ["scale(0.96)", "scale(1)"] },
-            { duration: mid, ease: softOut });
-        }
       });
     });
 
@@ -243,11 +253,10 @@
     form();
     gallery();
     masthead();
-    if (!motionOn || !animate) return;
+    if (!motionOn) return;
     heroIn();
     reveals();
     counters();
-    presses();
     parallax();
   }
 

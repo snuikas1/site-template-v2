@@ -45,6 +45,18 @@ if (about?.photo && !wanted.some((w) => w.slug === about.photo)) {
   wanted.push({ slug: about.photo, file: about.photo + ".jpg", sizes: CARD });
 }
 
+// Dalybų nuotrauka (og:image): 1200x630 ir tik JPEG — Facebook, LinkedIn ir Slack
+// nei AVIF, nei WebP nerodo, o <picture> pakopų čia niekas nerenka. Kerpama iš hero originalo.
+if (content.site.ogImage) {
+  wanted.push({
+    slug: "og",
+    out: content.site.ogImage.replace(/^img\//, "").replace(/\.jpe?g$/i, ""),
+    file: hero.photo,
+    sizes: [[1200, 630]],
+    jpegOnly: true,
+  });
+}
+
 mkdirSync(TMP, { recursive: true });
 const report = [];
 
@@ -66,9 +78,15 @@ for (const item of wanted) {
     const [cw, ch] = dims(cover);
     if (cw < w || ch < h) throw new Error(`${item.slug}: ${cw}x${ch} neuždengia ${w}x${h}`);
 
-    const jpg = `${IMG}${item.slug}-${w}.jpg`;
-    const avif = `${IMG}${item.slug}-${w}.avif`;
+    const stem = item.out || `${item.slug}-${w}`;
+    const jpg = `${IMG}${stem}.jpg`;
+    const avif = `${IMG}${stem}.avif`;
     sips(["-c", String(h), String(w), "-s", "format", "jpeg", "-s", "formatOptions", "60", cover, "--out", jpg]);
+
+    if (item.jpegOnly) {
+      report.push({ name: stem, w, h, jb: statSync(jpg).size, src: statSync(source).size });
+      continue;
+    }
 
     // AVIF kokybė mažinama tol, kol byla tikrai lengvesnė už JPEG: sips prie aukštų
     // formatOptions parašo DIDESNĘ bylą už šaltinį, ir tai tyli klaida.
@@ -85,23 +103,26 @@ for (const item of wanted) {
     if (aw !== w || ah !== h) throw new Error(`${item.slug}-${w}.avif yra ${aw}x${ah}, laukta ${w}x${h}`);
 
     // Tarpinė pakopa toms naršyklėms, kurios AVIF nemoka (apie 5%): joms WebP vietoj JPEG.
-    const webp = `${IMG}${item.slug}-${w}.webp`;
+    const webp = `${IMG}${stem}.webp`;
     execFileSync(SHARP, ["-i", jpg, "-o", webp, "--", "--format", "webp", "--quality", "75"], { stdio: ["ignore", "pipe", "pipe"] });
     const wb = statSync(webp).size;
     if (wb >= jb) throw new Error(`${item.slug}-${w}.webp (${wb} B) nemažesnis už JPEG (${jb} B)`);
     const [ww, wh] = dims(webp);
     if (ww !== w || wh !== h) throw new Error(`${item.slug}-${w}.webp yra ${ww}x${wh}, laukta ${w}x${h}`);
 
-    report.push({ name: `${item.slug}-${w}`, w, h, jb, ab, wb, q, src: statSync(source).size });
+    report.push({ name: stem, w, h, jb, ab, wb, q, src: statSync(source).size });
   }
 }
 
 rmSync(TMP, { recursive: true, force: true });
 
-const jt = report.reduce((s, r) => s + r.jb, 0);
-const at = report.reduce((s, r) => s + r.ab, 0);
+const full = report.filter((r) => r.ab);
+const jt = full.reduce((s, r) => s + r.jb, 0);
+const at = full.reduce((s, r) => s + r.ab, 0);
 for (const r of report) {
-  console.log(`${r.name.padEnd(26)} ${String(r.w).padStart(4)}×${String(r.h).padEnd(4)} jpg ${String(r.jb).padStart(7)} B · webp ${String(r.wb).padStart(7)} B · avif q${r.q} ${String(r.ab).padStart(7)} B · −${(100 - (r.ab / r.jb) * 100).toFixed(0)}%`);
+  const head = `${r.name.padEnd(26)} ${String(r.w).padStart(4)}×${String(r.h).padEnd(4)}`;
+  if (!r.ab) console.log(`${head} jpg ${String(r.jb).padStart(7)} B · tik dalyboms (og:image)`);
+  else console.log(`${head} jpg ${String(r.jb).padStart(7)} B · webp ${String(r.wb).padStart(7)} B · avif q${r.q} ${String(r.ab).padStart(7)} B · −${(100 - (r.ab / r.jb) * 100).toFixed(0)}%`);
 }
-const wt = report.reduce((s, r) => s + r.wb, 0);
+const wt = full.reduce((s, r) => s + r.wb, 0);
 console.log(`viso jpg ${(jt / 1024).toFixed(0)} KB · webp ${(wt / 1024).toFixed(0)} KB · avif ${(at / 1024).toFixed(0)} KB · AVIF lengvesnis už JPEG ${(100 - (at / jt) * 100).toFixed(0)}%`);

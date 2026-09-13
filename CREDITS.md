@@ -1,6 +1,8 @@
 # Nuotraukos
 
 Svetainėje yra keturios fotografijos: viena hero sekcijoje ir trys darbų galerijoje.
+Dalyboms skirta `img/og.jpg` iškerpama iš to paties hero originalo, todėl atskiro autoriaus
+neturi — galioja ta pati hero eilutė lentelėje.
 Originalai — `src/img/_source/`; iš jų `node tools/images.mjs` padaro dydžius ir AVIF
 variantus, kurių prašo `content.json`. Galerijos lange rodomas parašas surenkamas iš
 `src/img/credits.json` pagal šabloną „Nuotrauka: {author}, {source}, {license}“.
@@ -40,6 +42,8 @@ palik juos užpildytus.
 Instrument Sans ir Instrument Serif — SIL Open Font License 1.1. Licencijų tekstai:
 `src/fonts/OFL-Instrument-Sans.txt` ir `src/fonts/OFL-Instrument-Serif.txt`.
 
-## Motion
+## Svetimo kodo nėra
 
-`src/vendor/motion.js` — Motion 13.2.0, MIT licencija, tekstas `src/vendor/motion-LICENSE.md`.
+Šablonas neturi nė vienos bibliotekos: visas JS yra `src/main.js`, visa animacija — CSS.
+Anksčiau čia gulėjo Motion 13.2.0 (MIT); jis pašalintas 2026-09-13, nes viskas, ką jis
+darė, turi tiesioginį naršyklės atitikmenį (žr. README skyrių „Animacija“).

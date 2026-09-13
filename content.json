@@ -9,7 +9,28 @@
     "address": "Cechas: Vilniaus r., Nemėžis",
     "fictional": true,
     "lang": "lt",
-    "noindex": true
+    "noindex": true,
+    "baseUrl": "https://snuikas1.github.io/site-template-v2/",
+    "ogImage": "img/og.jpg",
+    "locale": "lt_LT",
+    "legalName": "Plieno linija, UAB",
+    "addr": {
+      "street": "Gamyklos g. 4",
+      "locality": "Nemėžis",
+      "region": "Vilniaus r.",
+      "postalCode": "LT-13279",
+      "country": "LT"
+    },
+    "openingHours": "Mo-Fr 08:00-17:00",
+    "priceRange": "€€",
+    "areaServed": [
+      "Vilnius",
+      "Vilniaus rajonas"
+    ],
+    "notFound": {
+      "title": "Tokio puslapio nėra",
+      "text": "Nuoroda pasenusi arba adrese liko klaida. Iš čia galite grįžti į pradžią arba eiti tiesiai į tai, ko ieškojote."
+    }
   },
   "sections": [
     {
@@ -85,6 +106,16 @@
             "Gamyba ir montavimas"
           ]
         }
+      ],
+      "links": [
+        {
+          "label": "Pažiūrėti pagamintus darbus",
+          "to": "works"
+        },
+        {
+          "label": "Parašyti užklausą apie savo darbą",
+          "to": "contact"
+        }
       ]
     },
     {
@@ -113,6 +144,12 @@
           "place": "Vilnius, restorano virtuvė",
           "photo": "virtuve-nerudijantis",
           "alt": "Restorano virtuvė su nerūdijančio plieno darbastaliais ir gartraukiu, virėjai dirba prie linijos."
+        }
+      ],
+      "links": [
+        {
+          "label": "Visos paslaugos ir kas į jas įskaičiuota",
+          "to": "services"
         }
       ]
     },
@@ -249,7 +286,11 @@
         },
         {
           "q": "Ar atvažiuojate matuoti?",
-          "a": "Taip. Vilniuje ir Vilniaus rajone matavimas nemokamas. Toliau — pagal atstumą, pasakome iš anksto."
+          "a": "Taip. Vilniuje ir Vilniaus rajone matavimas nemokamas. Toliau — pagal atstumą, pasakome iš anksto.",
+          "link": {
+            "label": "Užsakyti nemokamą matavimą",
+            "to": "contact"
+          }
         },
         {
           "q": "Ar montuojate patys?",
@@ -292,6 +333,12 @@
         {
           "title": "Po savęs sutvarkome",
           "text": "Objektą paliekame švarų. Atliekas ir pakuotes išvežame patys."
+        }
+      ],
+      "links": [
+        {
+          "label": "Susisiekti su cechu Nemėžyje",
+          "to": "contact"
         }
       ]
     },
@@ -367,7 +414,8 @@
         {
           "id": "cta"
         }
-      ]
+      ],
+      "description": "Projektuojame ir gaminame laiptus, turėklus, vartus ir nerūdijančio plieno paviršius. Matuojame vietoje, gaminame ceche, montuojame patys. Vilnius ir rajonas."
     },
     {
       "slug": "paslaugos",
@@ -382,7 +430,9 @@
         {
           "id": "cta"
         }
-      ]
+      ],
+      "description": "Laiptai ir turėklai, vartai ir tvoros, nerūdijančio plieno paviršiai ir konstrukcijos pagal užsakymą. Kainos nuo 90 € už bėgantį metrą, matavimas nemokamas.",
+      "crumb": "Paslaugos"
     },
     {
       "slug": "darbai",
@@ -394,7 +444,9 @@
         {
           "id": "cta"
         }
-      ]
+      ],
+      "description": "Sraigtiniai laiptai, balkonų turėklai ir nerūdijančio plieno darbastaliai — dalis darbų, pagamintų ir sumontuotų Nemėžio ceche per pastaruosius metus.",
+      "crumb": "Darbai"
     },
     {
       "slug": "apie",
@@ -412,7 +464,9 @@
         {
           "id": "cta"
         }
-      ]
+      ],
+      "description": "Metalo cechas Nemėžyje nuo 2012 metų: vienuolika žmonių, apie šimtą darbų per metus, penkerių metų garantija siūlėms ir dangai.",
+      "crumb": "Apie"
     },
     {
       "slug": "kontaktai",
@@ -424,7 +478,9 @@
         {
           "id": "faq"
         }
-      ]
+      ],
+      "description": "Parašykite užklausą arba skambinkite +370 600 00002. Matavimas Vilniuje ir rajone nemokamas, atsakome per vieną darbo dieną.",
+      "crumb": "Kontaktai"
     }
   ]
 }
